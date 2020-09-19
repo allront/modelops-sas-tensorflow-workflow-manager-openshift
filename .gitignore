@@ -1,0 +1,13 @@
+#IDLE folder
+.idea
+.pytest_cache
+.ipynb_checkpoints
+
+#folders
+docs
+env
+sas_workflow_manager_for_openshift.egg-info
+
+#files
+*.pem
+

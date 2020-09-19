@@ -1,0 +1,12 @@
+connection:
+    server: http://10.96.14.134
+    authUri: /SASLogon/oauth/token
+    username: sasdemo
+    password: Orion123
+endpoints:
+    modelrepository_endpoint: /modelRepository/
+modelrepository_meta:
+    project_name: sas_modelops_tensorflow_openshift
+server_meta:
+    model_path: './model'
+    model_artefact_name: 'champion_model.zip'

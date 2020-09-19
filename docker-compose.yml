@@ -1,0 +1,12 @@
+version: "3.0"
+
+services:
+  train:
+    image: tensorflow:1.0.0
+    container_name: jupyterlab
+    build: ./docker/tensorflow-notebook/
+    ports:
+      - 8888:8888
+    volumes:
+      - ./:/home/jovyan/work/
+
