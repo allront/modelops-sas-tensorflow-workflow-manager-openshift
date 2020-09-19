@@ -1,4 +1,4 @@
-# A SAS Workflow prototype to Push Docker Image on OpenShift remotely
+# Deploy a Tensorflow model versioned in SAS Model Manager on Red Hat OpenShift Container Platform
 
 The goal of this scenario is to answer just one question: 
 
@@ -24,7 +24,7 @@ In this scenario, we deal with one of the common cases we face recently.
 Below **the high-level architecture of the solution**:
 
 <p align="center">
-<img src="https://gitlab.sas.com/ivnard/sas-workflow-manager-for-openshift/raw/master/architecture_2.png">
+<img src="https://github.com/IvanNardini/modelops-sas-tensorflow-workflow-manager-openshift/raw/master/architecture_2.png">
 </p>
 
 ## Installation
