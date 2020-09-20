@@ -24,7 +24,7 @@ In this scenario, we deal with one of the common cases we face recently.
 Below **the high-level architecture of the solution**:
 
 <p align="center">
-<img src="https://github.com/IvanNardini/modelops-sas-tensorflow-workflow-manager-openshift/raw/master/architecture_2.png">
+<img src="https://github.com/IvanNardini/modelops-sas-tensorflow-workflow-manager-openshift/raw/master/architecture_3.png">
 </p>
 
 ## Installation
