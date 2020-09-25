@@ -4,6 +4,7 @@
 .ipynb_checkpoints
 
 #folders
+logs
 docs
 env
 sas_workflow_manager_for_openshift.egg-info
