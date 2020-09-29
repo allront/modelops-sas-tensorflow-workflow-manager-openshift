@@ -1,0 +1,5 @@
+connection:
+    server: 172.28.106.218
+modelrepository_meta:
+    project_name: sas_modelops_tensorflow_openshift
+    repository: Public

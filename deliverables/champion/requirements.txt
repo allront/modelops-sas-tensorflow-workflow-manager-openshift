@@ -1,9 +1,11 @@
 absl-py==0.10.0
+aiohttp==3.6.2
 alembic==1.4.2
 apache-beam==2.23.0
 argon2-cffi @ file:///home/conda/feedstock_root/build_artifacts/argon2-cffi_1596629847793/work
 astunparse==1.6.3
 async-generator==1.10
+async-timeout==3.0.1
 attrs @ file:///home/conda/feedstock_root/build_artifacts/attrs_1597959372343/work
 avro-python3==1.9.2.1
 backcall @ file:///home/conda/feedstock_root/build_artifacts/backcall_1592338393461/work
@@ -44,7 +46,7 @@ gast==0.3.3
 gmpy2==2.1.0b1
 google-api-core==1.22.2
 google-api-python-client==1.12.2
-google-auth==1.21.3
+google-auth==1.22.0
 google-auth-httplib2==0.0.4
 google-auth-oauthlib==0.4.1
 google-pasta==0.2.0
@@ -86,6 +88,7 @@ mistune==0.8.4
 mock==2.0.0
 mpmath==1.1.0
 msgpack==1.0.0
+multidict==4.7.6
 nbconvert==5.6.1
 nbformat @ file:///home/conda/feedstock_root/build_artifacts/nbformat_1594060262917/work
 networkx @ file:///home/conda/feedstock_root/build_artifacts/networkx_1598210780226/work
@@ -189,5 +192,6 @@ Werkzeug==1.0.1
 widgetsnbextension @ file:///home/conda/feedstock_root/build_artifacts/widgetsnbextension_1594164345747/work
 wrapt==1.12.1
 xlrd @ file:///home/conda/feedstock_root/build_artifacts/xlrd_1595712200082/work
+yarl==1.6.0
 zict==2.0.0
 zipp==3.1.0
