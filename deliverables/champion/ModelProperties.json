@@ -1,5 +1,5 @@
 {
-    "name": "Tensorflow BoostedTreesClassifier",
+    "name": "Tensorflow_BoostedTreesClassifier",
     "description": "A Classifier for Tensorflow Boosted Trees models : BAD = REASON + JOB + LOAN + MORTDUE + VALUE + YOJ + DEROG + DELINQ + CLAGE + NINQ + CLNO + DEBTINC",
     "function": "classification",
     "scoreCodeType": "python",
