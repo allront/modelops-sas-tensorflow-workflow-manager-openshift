@@ -7,9 +7,9 @@ The goal of this scenario is to answer just one question:
 And the answer is: **Yes, of course. Thanks to SAS Workflow Manager**
 
 ## Table of Contents
-* [Setup Instructions](docs/installation/0_setup_instructions.md)
-* [Scenario Description](docs/installation/1_scenario_instructions.md)
-* [Customer Presentation Materials](docs/presentation)
+* [Setup Instructions](docs/installation/0_setup_instructions.md) --- to fill
+* [Scenario Description](docs/installation/1_scenario_instructions.md) --- to fill
+* [Customer Presentation Materials](docs/presentation) --- to fill
 
 ## Overview
 
