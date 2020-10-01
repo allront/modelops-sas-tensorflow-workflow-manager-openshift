@@ -2,15 +2,16 @@
 # O_prebuild.sh is paired with prebuild.py script to download the artefact on the server
 #
 # Variables:
-# CONFIG_FILE=${1:-environment.yaml} configuration path
+# PROJECT_NAME=${1:-sas_modelops_tensorflow_openshift} SAS Model Manager project name
 #
 # Steps:
 # 1 - Clean target repo
 # 2 - Execute python script
 
 # Variables
-CONFIG_FILE=${1:-environment.yaml}
-OUTFOLDER="/home/sasdemo/SAS_Workflow_OKD_demo/src/base/prebuild/"
+PROJECT_NAME=${1:-sas_modelops_tensorflow_openshift}
+CONFIG_FILE="environment.yaml"
+OUTFOLDER="/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/base/prebuild/"
 MODEL_DIR="/model"
 
 
@@ -24,6 +25,6 @@ fi
 
 # 2 - Execute python script
 echo "$(date '+%x %r') INFO Execute prebuild.py"
-export PYTHONPATH=${PYTHONPATH}:/home/sasdemo/SAS_Workflow_OKD_demo/env/lib/python3.7/site-packages/
+export PYTHONPATH=${PYTHONPATH}:/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/base/prebuild/env/lib/python3.7/site-packages/
 chmod +x ./prebuild.py
-python prebuild.py ${CONFIG_FILE}
+python prebuild.py ${PROJECT_NAME} ${CONFIG_FILE}
