@@ -25,6 +25,6 @@ fi
 
 # 2 - Execute python script
 echo "$(date '+%x %r') INFO Execute prebuild.py"
-export PYTHONPATH=${PYTHONPATH}:/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/base/prebuild/env/lib/python3.7/site-packages/
+export PYTHONPATH=${PYTHONPATH}:/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/env/lib/python3.7/site-packages/
 chmod +x ./prebuild.py
 python prebuild.py ${PROJECT_NAME} ${CONFIG_FILE}
