@@ -185,8 +185,9 @@ def get_model_artefact(server: str, token: str, modelrepo_endpoint: str,
         return 0
 #  Main
 def main():
-    # Read configuration
-    CONFIGPATH = sys.argv[1]
+    # Read configuration and set the PROJECT_NAME variable
+    PROJECT_NAME = sys.argv[1]
+    CONFIGPATH = sys.argv[2]
 
     stream = open(CONFIGPATH, 'r')
     config = yaml.load(stream)
@@ -197,7 +198,7 @@ def main():
     USERNAME = config['connection']['username']
     PASSWORD = config['connection']['password']
     MODELREPO_ENDPOINT = config['endpoints']['modelrepository_endpoint']
-    PROJECT_NAME = config['modelrepository_meta']['project_name']
+    # PROJECT_NAME = config['modelrepository_meta']['project_name']
     MODEL_PATH = config['server_meta']['model_path']
     MODEL_NAME = config['server_meta']['model_artefact_name']
 
