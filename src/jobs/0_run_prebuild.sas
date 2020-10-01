@@ -1,9 +1,9 @@
-ffilename logfile '/home/sasdemo/SAS_Workflow_OKD_demo/logs/prebuild.log';
+filename logfile '/opt/demos/sas_workflow_openshift_demo/src/base/0_prebuild.log';
 
 proc printto log=logfile;
 run;
 
-filename bashpipe pipe "/home/sasdemo/SAS_Workflow_OKD_demo/src/base/0_prebuild.sh";
+filename bashpipe pipe "/opt/demos/sas_workflow_openshift_demo/src/base/0_prebuild.sh";
 
 data _null_;
 infile bashpipe;

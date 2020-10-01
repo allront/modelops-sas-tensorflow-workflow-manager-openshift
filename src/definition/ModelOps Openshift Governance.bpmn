@@ -30,17 +30,17 @@
         <dataObject id="WFECF8393C-D28E-4569-A047-85723229D7E2" itemSubjectRef="xsd:boolean" name="Model_Is_Validated"/>
         <dataObject id="WF4DAD20E6-FA73-455B-AA82-4ECDEBB84348" itemSubjectRef="xsd:string" name="prebuildJob">
             <extensionElements>
-                <flowable:value>/Public/SAS_ModelOps_Tensorflow_Openshift/0_run_prebuild</flowable:value>
+                <flowable:value>/Public/AutoML/0_prebuild</flowable:value>
             </extensionElements>
         </dataObject>
         <dataObject id="WFDFD71602-AE41-4CB3-AA7A-294E18FB0EDC" itemSubjectRef="xsd:string" name="buildJob">
             <extensionElements>
-                <flowable:value>/Public/SAS_ModelOps_Tensorflow_Openshift/1_run_build</flowable:value>
+                <flowable:value>/Public/AutoML/1_run_build</flowable:value>
             </extensionElements>
         </dataObject>
         <dataObject id="WF43FB002D-FA8F-4EA5-9ECF-055E21BDDA36" itemSubjectRef="xsd:string" name="deployJob">
             <extensionElements>
-                <flowable:value>/Public/SAS_ModelOps_Tensorflow_Openshift/2_run_deploy</flowable:value>
+                <flowable:value>/Public/AutoML/2_run_deploy</flowable:value>
             </extensionElements>
         </dataObject>
         <sequenceFlow id="WF4A54F1D1-28F3-4606-99CA-B93D48E2497A" sourceRef="WF3C26F11D-36AD-409B-87F1-47C34FEA9C47" targetRef="WF9CEEE3A9-D89C-4AB5-A871-2893837F8D1A"/>
@@ -106,7 +106,7 @@
             </extensionElements>
             <potentialOwner>
                 <resourceAssignmentExpression>
-                    <formalExpression>user(sasdemo)</formalExpression>
+                    <formalExpression>group(CASHostAccountRequired)</formalExpression>
                 </resourceAssignmentExpression>
             </potentialOwner>
         </userTask>
