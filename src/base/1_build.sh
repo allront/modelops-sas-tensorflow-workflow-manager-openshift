@@ -15,11 +15,12 @@
 #   4 - Commit the Champion Tensorflow image (https://docs.docker.com/engine/reference/commandline/commit/)
 
 # Variables
-WORKDIR="/home/sasdemo/SAS_Workflow_OKD_demo/src/base/"
+WORKDIR="/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/base"
 MODEL_PATH=$WORKDIR/prebuild/model/
 MODEL_NAME=${1:-champion_model.zip}
 #MODEL_DIR=$(find $MODEL_PATH -type d ! -name '*.*' | head -n 2 | tail -n 1)
 MODEL_DIR=$(find $MODEL_PATH -type d ! -name '*.*' | head -n 1)
+CONTAINER_NAME="base_$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8)"
 
 # 0 - Setup
 # a) unzip model
@@ -41,12 +42,12 @@ docker pull tensorflow/serving:2.3.0
 
 # 2 - Run a temporary Tensorflow container
 echo "$(date '+%x %r') INFO Run a temporary Tensorflow container"
-docker run -d --name base tensorflow/serving:2.3.0
+docker run -d --name ${CONTAINER_NAME} tensorflow/serving:2.3.0
 
 # 3 - Copy Model inside temporary Tensorflow container
 echo "$(date '+%x %r') INFO Copy Model inside temporary Tensorflow container"
-docker cp ${MODEL_DIR} base:/models/champion_model
+docker cp ${MODEL_DIR} ${CONTAINER_NAME}:/models/champion_model
 
 # 4 - Commit the Champion Tensorflow image (set MODEL_NAME cause tensorflow serving image needs it)
 echo "$(date '+%x %r') INFO Commit the Champion Tensorflow image"
-docker commit --change "ENV MODEL_NAME champion_model" base tensorflow/serving/champion_model:1.0.0
+docker commit --change "ENV MODEL_NAME champion_model" ${CONTAINER_NAME} tensorflow/serving/champion_model:1.0.0
