@@ -20,8 +20,9 @@ import logging
 
 def set_raw_records(datapath:str) -> dict:
     # Create a dictionary of raw records
-    raw_input_dictionary = pd.read_csv(datapath, sep=',')
-    raw_input_dictionary.to_dict()
+    raw_input = pd.read_csv(datapath, sep=',')
+    raw_input_dictionary = raw_input.to_dict()
+    print(raw_input_dictionary)
 
 # Create a logging for each request
 
