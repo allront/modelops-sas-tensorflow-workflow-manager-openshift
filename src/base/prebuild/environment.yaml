@@ -1,8 +1,8 @@
 connection:
     server: http://172.28.106.218 
     authUri: /SASLogon/oauth/token
-    username:  
-    password: 
+    username: russasdemo  
+    password: Orion123
 endpoints:
     modelrepository_endpoint: /modelRepository/
 modelrepository_meta:
