@@ -1,6 +1,5 @@
 import pytest
-from prebuild.prebuild import get_authorization, get_project_id, get_champion_id, get_model_content_id, get_model_artefact
-
+from ..prebuild import get_authorization, get_project_id, get_champion_id, get_model_content_id, get_model_artefact
 # Variables
 SERVER = 'http://10.96.14.134'
 AUTHURI = '/SASLogon/oauth/token'

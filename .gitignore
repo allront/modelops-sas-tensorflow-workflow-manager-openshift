@@ -8,7 +8,7 @@ logs
 docs
 env
 sas_workflow_manager_for_openshift.egg-info
-
+src/base/prebuild/tests
 #files
 *.pem
 
