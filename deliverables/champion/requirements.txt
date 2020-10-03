@@ -1,6 +1,6 @@
 absl-py==0.10.0
 aiohttp==3.6.2
-alembic==1.4.2
+alembic==1.4.1
 apache-beam==2.23.0
 argon2-cffi @ file:///home/conda/feedstock_root/build_artifacts/argon2-cffi_1596629847793/work
 astunparse==1.6.3
@@ -8,6 +8,8 @@ async-generator==1.10
 async-timeout==3.0.1
 attrs @ file:///home/conda/feedstock_root/build_artifacts/attrs_1597959372343/work
 avro-python3==1.9.2.1
+azure-core==1.8.1
+azure-storage-blob==12.5.0
 backcall @ file:///home/conda/feedstock_root/build_artifacts/backcall_1592338393461/work
 backports.functools-lru-cache==1.6.1
 beautifulsoup4 @ file:///home/conda/feedstock_root/build_artifacts/beautifulsoup4_1597679909012/work
@@ -31,27 +33,34 @@ cycler==0.10.0
 Cython @ file:///home/conda/feedstock_root/build_artifacts/cython_1594253469691/work
 cytoolz==0.10.1
 dask @ file:///home/conda/feedstock_root/build_artifacts/dask-core_1593753420471/work
+databricks-cli==0.12.0
 decorator==4.4.2
 defusedxml==0.6.0
 dill==0.3.1.1
 distributed @ file:///home/conda/feedstock_root/build_artifacts/distributed_1598124712458/work
 dm-tree==0.1.5
+docker==4.3.1
 docopt==0.6.2
 entrypoints==0.3
 fastavro==0.23.6
 fastcache==1.1.0
+Flask==1.1.2
 fsspec @ file:///home/conda/feedstock_root/build_artifacts/fsspec_1596221475257/work
 future==0.18.2
 gast==0.3.3
+gitdb==4.0.5
+GitPython==3.1.9
 gmpy2==2.1.0b1
-google-api-core==1.22.2
-google-api-python-client==1.12.2
+google-api-core==1.22.3
+google-api-python-client==1.12.3
 google-auth==1.22.0
 google-auth-httplib2==0.0.4
 google-auth-oauthlib==0.4.1
 google-pasta==0.2.0
 googleapis-common-protos==1.52.0
+gorilla==0.3.0
 grpcio==1.32.0
+gunicorn==20.0.4
 h5py @ file:///home/conda/feedstock_root/build_artifacts/h5py_1595110170499/work
 hdfs==2.5.8
 HeapDict==1.0.1
@@ -65,6 +74,8 @@ ipympl @ file:///home/conda/feedstock_root/build_artifacts/ipympl_1594803292839/
 ipython @ file:///home/conda/feedstock_root/build_artifacts/ipython_1596256308089/work
 ipython-genutils==0.2.0
 ipywidgets==7.5.1
+isodate==0.6.0
+itsdangerous==1.1.0
 jedi @ file:///home/conda/feedstock_root/build_artifacts/jedi_1595018901065/work
 Jinja2==2.11.2
 joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1593624380152/work
@@ -85,9 +96,11 @@ Markdown==3.2.2
 MarkupSafe==1.1.1
 matplotlib @ file:///home/conda/feedstock_root/build_artifacts/matplotlib-base_1592576119134/work
 mistune==0.8.4
+mlflow==1.11.0
 mock==2.0.0
 mpmath==1.1.0
 msgpack==1.0.0
+msrest==0.6.19
 multidict==4.7.6
 nbconvert==5.6.1
 nbformat @ file:///home/conda/feedstock_root/build_artifacts/nbformat_1594060262917/work
@@ -112,6 +125,7 @@ pexpect==4.8.0
 pickleshare==0.7.5
 Pillow @ file:///home/conda/feedstock_root/build_artifacts/pillow_1594213113401/work
 prometheus-client @ file:///home/conda/feedstock_root/build_artifacts/prometheus_client_1590412252446/work
+prometheus-flask-exporter==0.18.0
 promise==2.3
 prompt-toolkit @ file:///home/conda/feedstock_root/build_artifacts/prompt-toolkit_1597061474901/work
 protobuf==3.12.4
@@ -138,6 +152,7 @@ pytz==2020.1
 PyWavelets==1.1.1
 PyYAML==5.3.1
 pyzmq==19.0.2
+querystring-parser==1.2.4
 requests @ file:///home/conda/feedstock_root/build_artifacts/requests_1592425495151/work
 requests-oauthlib==1.3.0
 rpy2==3.1.0
@@ -152,13 +167,17 @@ seaborn @ file:///home/conda/feedstock_root/build_artifacts/seaborn-base_1591878
 Send2Trash==1.5.0
 simplegeneric==0.8.1
 six @ file:///home/conda/feedstock_root/build_artifacts/six_1590081179328/work
+smmap==3.0.4
 sortedcontainers @ file:///home/conda/feedstock_root/build_artifacts/sortedcontainers_1591999956871/work
 soupsieve @ file:///home/conda/feedstock_root/build_artifacts/soupsieve_1597680516047/work
-SQLAlchemy @ file:///home/conda/feedstock_root/build_artifacts/sqlalchemy_1597701918255/work
+SQLAlchemy==1.3.13
+sqlparse==0.3.1
 statsmodels @ file:///home/conda/feedstock_root/build_artifacts/statsmodels_1591963249119/work
 sympy @ file:///home/conda/feedstock_root/build_artifacts/sympy_1597017442484/work
 tables==3.6.1
+tabulate==0.8.7
 tblib==1.6.0
+tenacity==6.2.0
 tensorboard==2.3.0
 tensorboard-plugin-wit==1.7.0
 tensorflow==2.3.0
@@ -188,6 +207,7 @@ urllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_159543481640
 vincent==0.4.4
 wcwidth @ file:///home/conda/feedstock_root/build_artifacts/wcwidth_1595859607677/work
 webencodings==0.5.1
+websocket-client==0.57.0
 Werkzeug==1.0.1
 widgetsnbextension @ file:///home/conda/feedstock_root/build_artifacts/widgetsnbextension_1594164345747/work
 wrapt==1.12.1

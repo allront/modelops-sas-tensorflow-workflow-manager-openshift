@@ -1,12 +1,22 @@
 version: "3.0"
 
 services:
-  train:
+   train:
     image: tensorflow:1.0.0
     container_name: jupyterlab
     build: ./docker/tensorflow-notebook/
+    depends_on: 
+      - mlflow
+    environment: 
+      MLFLOW_TRACKING_URI: 'http://mlflow:5000'
     ports:
       - 8888:8888
     volumes:
       - ./:/home/jovyan/work/
-
+   mlflow:
+     image: mlflow:1.0.0
+     container_name: mlflow
+     build:
+      context: ./docker/mlflow
+     ports:
+      - 5000:5000
