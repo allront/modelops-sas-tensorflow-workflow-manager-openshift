@@ -1,0 +1,5 @@
+model_endpoint:
+    schema: http
+    ip: localhost
+    port: 8501
+    path: v1/models/model:classify
