@@ -1,3 +1,21 @@
+variables_schema:
+    target: BAD
+    inputs:
+        - LOAN
+        - MORTDUE
+        - VALUE
+        - YOJ
+        - DEROG
+        - DELINQ
+        - CLAGE
+        - NINQ
+        - CLNO
+        - DEBTINC
+    outputs:
+        - P_BAD0
+        - P_BAD1
+        - EM_PROBABILITY
+        - EM_CLASSIFICATION
 model_endpoint:
     schema: http
     ip: localhost

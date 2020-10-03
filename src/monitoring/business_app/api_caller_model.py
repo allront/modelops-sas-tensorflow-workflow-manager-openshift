@@ -18,7 +18,7 @@ import logging
 
 
 # Helpers
-def read_yaml(configpath:str)->dict:
+def load_yaml (configpath: str) -> dict:
     '''
     Given file path, Read yaml file
     :param configpath:
@@ -28,7 +28,24 @@ def read_yaml(configpath:str)->dict:
         conn_dict = yaml.load(file, Loader=yaml.FullLoader)
     return conn_dict
 
-def json_formatter(string: str)->str:
+
+def read_raw_data (datapath: str, target: str, inputs: list) -> tuple:
+    '''
+    Read target and inputs
+    :param datapath:
+    :param target:
+    :param inputs:
+    :return:
+    '''
+    raw_dataframe = pd.read_csv(datapath, sep=';')
+    # Set target as dataframe to maintain index
+    target = raw_dataframe[[target]]
+    inputs = raw_dataframe[inputs]
+    return target, inputs
+
+
+# Score inputs
+def json_formatter (string: str) -> str:
     '''
     Format record for scoring
     :param string:
@@ -42,7 +59,8 @@ def json_formatter(string: str)->str:
     format_record = ''.join(['{"examples":[', format_string, ']}'])
     return format_record
 
-def set_raw_records(datapath: str, nrows: int) -> list:
+
+def set_plain_inputs (raw_inputs, nrows: int) -> list:
     '''
     Create a list of raw records dictionary
     :param datapath:
@@ -50,19 +68,29 @@ def set_raw_records(datapath: str, nrows: int) -> list:
     :return: raw_records
     '''
     # Read dataframe
-    raw_input_dictionary = pd.read_csv(datapath, sep=',').to_dict()
+    raw_inputs_dictionary = raw_inputs.to_dict()
     # Drop target variable
-    #raw_input_dictionary.pop(target)
+    # raw_input_dictionary.pop(target)
     # Create a list to store raw records
-    raw_records = []
+    plain_inputs = []
     i = 0
     while i < nrows:
-        raw_record = {column: row[i] for column, row in raw_input_dictionary.items()}
-        raw_records.append(raw_record)
+        plain_input = {column: row[i] for column, row in raw_inputs_dictionary.items()}
+        plain_inputs.append(plain_input)
         i += 1
-    return raw_records
+    return plain_inputs
 
-def score_request(schema, ip, port, path, record):
+
+def score_request (schema, ip, port, path, record):
+    '''
+    Send API scoring request
+    :param schema:
+    :param ip:
+    :param port:
+    :param path:
+    :param record:
+    :return:
+    '''
     # Create url
     url = '{0}://{1}:{2}/{3}'.format(schema, ip, port, path)
     # Format record for scoring
@@ -74,23 +102,49 @@ def score_request(schema, ip, port, path, record):
         output = {}
     return output
 
-def write_logfile():
+def scored_data_list (plain_inputs, schema, ip, port, path):
+    probabilities_list = []
+    for plain_input in plain_inputs:
+        plain_output = score_request(schema, ip, port, path, plain_input)
+        probability = plain_output['results'][0][0][1]
+        scored_data_list.append(probability)
+    return probabilities_list
+
+# Create dataframe with outputs colums (P_BAD0, P_BAD1, EM_PROB, EM_CLASS)
+# def log_formatter (inputs, output):
+#     log_dataframe = pd.DataFrame()
+#     log_dataframe.columns()
+#     # Convert list of dictionary in a dataframe
+#     output = pd.DataFrame()
+#     # Set dataframe columns
+#     outputDf.columns = outputcols
+#     # merge with input data
+#     outputDf = pd.merge(inputDf, outputDf, how='inner', left_index=True, right_index=True)
+
+
+def write_logfile ():
     pass
 
 
+def main ():
+    pass
 
-# Create a logging for each request
 
 if __name__ == '__main__':
     DATAPATH = './data/perf_1_q1.csv'
     CONFIGPATH = './config/config.yaml'
-    CONFIG = read_yaml(CONFIGPATH)
+    CONFIG = load_yaml(CONFIGPATH)
+    VARIABLE_SCHEMA = CONFIG['variables_schema']
+    TARGET = VARIABLE_SCHEMA['target']
+    INPUTS = VARIABLE_SCHEMA['inputs']
     MODEL_ENDPOINT_META = CONFIG['model_endpoint']
-    raw_records = set_raw_records(DATAPATH, 'BAD', 10)
-    for record in raw_records:
-        score_request(MODEL_ENDPOINT_META['schema'],
-                  MODEL_ENDPOINT_META['ip'],
-                  MODEL_ENDPOINT_META['port'],
-                  MODEL_ENDPOINT_META['path'],
-                  record)
+    SCHEMA = MODEL_ENDPOINT_META['schema']
+    IP = MODEL_ENDPOINT_META['ip']
+    PORT = MODEL_ENDPOINT_META['port']
+    PATH = MODEL_ENDPOINT_META['path']
 
+    target, raw_inputs = read_raw_data(DATAPATH,
+                                       TARGET,
+                                       INPUTS)
+    plain_inputs = set_plain_inputs(raw_inputs, 10)
+    scored_data_list = scored_data_list(plain_inputs, SCHEMA, IP, PORT, PATH)

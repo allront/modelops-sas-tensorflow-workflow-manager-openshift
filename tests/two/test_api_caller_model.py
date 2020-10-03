@@ -7,9 +7,8 @@ nrows_params = [10, 20, 30]
 
 @pytest.mark.parametrize("datapath", datapath_params)
 @pytest.mark.parametrize("nrows", nrows_params)
-def test_set_raw_records (datapath, nrows):
+def test_set_raw_records(datapath, nrows):
     assert type(set_raw_records(datapath, nrows)) is list
-
 
 schema = 'http'
 ip = 'localhost'
