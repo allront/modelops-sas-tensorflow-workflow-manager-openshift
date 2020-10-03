@@ -42,11 +42,10 @@ def json_formatter(string: str)->str:
     format_record = ''.join(['{"examples":[', format_string, ']}'])
     return format_record
 
-def set_raw_records(datapath: str, target: str, nrows: int) -> list:
+def set_raw_records(datapath: str, nrows: int) -> list:
     '''
     Create a list of raw records dictionary
     :param datapath:
-    :param target:
     :param nrows:
     :return: raw_records
     '''
