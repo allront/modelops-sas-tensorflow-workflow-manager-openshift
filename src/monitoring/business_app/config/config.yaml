@@ -1,4 +1,6 @@
-variables_schema:
+data_meta:
+    datapath: ./data
+variables_schema_meta:
     target: BAD
     inputs:
         - LOAN
@@ -16,8 +18,10 @@ variables_schema:
         - P_BAD1
         - EM_PROBABILITY
         - EM_CLASSIFICATION
-model_endpoint:
+model_endpoint_meta:
     schema: http
     ip: localhost
     port: 8501
     path: v1/models/model:classify
+logging_meta:
+    logpath: ../logs/app.csv

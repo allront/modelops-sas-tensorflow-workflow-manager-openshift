@@ -1,14 +1,14 @@
 import pytest
-from src.monitoring.business_app.api_caller_model import set_raw_records, score_request
+import src.monitoring.business_app.app.api_caller_model as app
 
-datapath_params = ['./data/perf_1_q1.csv', './data/perf_2_q2.csv', './data/perf_3_q3.csv', './data/perf_4_q4.csv']
+datapath_params = ['./data/perf_1_q1.csv', './data/perf_2_q2.csv']
 nrows_params = [10, 20, 30]
 
 
 @pytest.mark.parametrize("datapath", datapath_params)
 @pytest.mark.parametrize("nrows", nrows_params)
 def test_set_raw_records(datapath, nrows):
-    assert type(set_raw_records(datapath, nrows)) is list
+    assert type(app.read_raw_data(datapath, nrows)) is list
 
 schema = 'http'
 ip = 'localhost'
@@ -19,4 +19,4 @@ record = {"examples": [
      'NINQ': 1.0, 'CLNO': 36.0, 'DEBTINC': 40.402, 'REASON': 'DebtCon', 'JOB': 'Other'}]}
 
 def test_score_request ():
-    assert type(score_request(schema, ip, port, path, record)) is dict
+    assert type(app.send_score_request(schema, ip, port, path, record)) is dict
