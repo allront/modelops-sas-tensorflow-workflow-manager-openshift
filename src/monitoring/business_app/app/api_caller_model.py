@@ -11,11 +11,11 @@ Steps:
 
 import os
 import yaml
-import numpy as np
 import pandas as pd
 import requests
 import time
 import logging
+
 
 # Helpers
 def load_yaml (configpath: str) -> dict:
@@ -28,7 +28,8 @@ def load_yaml (configpath: str) -> dict:
         conn_dict = yaml.load(file, Loader=yaml.FullLoader)
     return conn_dict
 
-def get_data_list(datapath:str) -> list:
+
+def get_data_list (datapath: str) -> list:
     '''
     Return csv data list
     :param datapath:
@@ -38,7 +39,8 @@ def get_data_list(datapath:str) -> list:
     data_paths = [os.path.join(datapath, filename) for filename in data_filenames]
     return data_paths
 
-def read_data(datapath: str, nrows=None) -> pd.DataFrame:
+
+def read_data (datapath: str, nrows=None) -> pd.DataFrame:
     '''
     Read csv for creating a nrows Dataframe
     :param datapath:
@@ -49,6 +51,7 @@ def read_data(datapath: str, nrows=None) -> pd.DataFrame:
     if nrows:
         data = data[:nrows]
     return data
+
 
 def set_target_predictors (dataframe: pd.DataFrame, target: str, inputs: list) -> tuple:
     '''
@@ -64,6 +67,7 @@ def set_target_predictors (dataframe: pd.DataFrame, target: str, inputs: list) -
     predictors = dataframe[inputs]
     return target, predictors
 
+
 def format_plain_input (string: str) -> str:
     '''
     Format plain input for scoring
@@ -77,6 +81,7 @@ def format_plain_input (string: str) -> str:
     # Create the record for scoring
     plain_input_formatted = ''.join(['{"examples":[', format_string, ']}'])
     return plain_input_formatted
+
 
 def set_plain_inputs (raw_inputs) -> list:
     '''
@@ -96,6 +101,7 @@ def set_plain_inputs (raw_inputs) -> list:
         plain_inputs.append(plain_input)
         i += 1
     return plain_inputs
+
 
 def send_score_request (schema, ip, port, path, plain_input):
     '''
@@ -121,6 +127,7 @@ def send_score_request (schema, ip, port, path, plain_input):
         plain_output = response.json()
         return plain_output
 
+
 def get_outputs_list (plain_inputs, schema, ip, port, path):
     '''
     Create a list of lists with infered labels and probabilities
@@ -140,7 +147,8 @@ def get_outputs_list (plain_inputs, schema, ip, port, path):
         outputs_list.append(plain_output)
     return outputs_list
 
-def set_outputs_dataframe(outputs_list, outputs):
+
+def set_outputs_dataframe (outputs_list, outputs):
     '''
     Set a dictionary with infered labels and probabilities
     :param outputs_list:
@@ -162,7 +170,8 @@ def set_outputs_dataframe(outputs_list, outputs):
     outputs_dataframe = pd.DataFrame(output_dictionaries_list)
     return outputs_dataframe
 
-def set_logging_dataframe(data:pd.DataFrame, outputs: pd.DataFrame) -> pd.DataFrame:
+
+def set_logging_dataframe (data: pd.DataFrame, outputs: pd.DataFrame) -> pd.DataFrame:
     '''
     Join target, inputs and outputs based on index
     :param target:
@@ -174,7 +183,7 @@ def set_logging_dataframe(data:pd.DataFrame, outputs: pd.DataFrame) -> pd.DataFr
     logDf = pd.merge(data, outputs, how='inner', left_index=True, right_index=True)
     return logDf
 
-def write_logfile (logDf: pd.DataFrame, logpath:str):
+def write_logfile (logDf: pd.DataFrame, logpath: str):
     '''
     Write the log file with scored data
     :param logDf:
@@ -183,34 +192,58 @@ def write_logfile (logDf: pd.DataFrame, logpath:str):
     '''
     logDf.to_csv(logpath, sep=',', index=False)
 
-# def main ():
-#     CONFIGPATH = '../config/config.yaml'
-#     pass
+def print_logs (logDf, nrows) -> list:
+    '''
+    Set log
+    :param logDf:
+    :param nrows:
+    :return:
+    '''
+    # Read dataframe
+    raw_output_dictionary = logDf.to_dict()
+    i = 0
+    while i < nrows:
+        # Create the column:value records dictionary to score
+        plain_output = {column: row[i] for column, row in raw_output_dictionary.items()}
+        print(plain_output)
+        time.sleep(1)
+        i += 1
 
-if __name__ == '__main__':
-    DATAPATH = '../data'
+def main ():
+
     CONFIGPATH = '../config/config.yaml'
     CONFIG = load_yaml(CONFIGPATH)
     DATA_META = CONFIG['data_meta']
-    DATA_PATH = DATA_META['datapath']
     VARIABLE_SCHEMA_META = CONFIG['variables_schema_meta']
-    TARGET = VARIABLE_SCHEMA_META['target']
-    INPUTS = VARIABLE_SCHEMA_META['inputs']
-    OUTPUTS = VARIABLE_SCHEMA_META['outputs']
     MODEL_ENDPOINT_META = CONFIG['model_endpoint_meta']
-    SCHEMA = MODEL_ENDPOINT_META['schema']
-    IP = MODEL_ENDPOINT_META['ip']
-    PORT = MODEL_ENDPOINT_META['port']
-    PATH = MODEL_ENDPOINT_META['path']
     LOGGING_META = CONFIG['logging_meta']
-    LOG_PATH = LOGGING_META['logpath']
-    DATALIST = get_data_list(DATAPATH)
-    data = read_data(DATAPATH)
-    target, inputs = set_target_predictors(data,
-                                       TARGET,
-                                       INPUTS)
-    plain_inputs = set_plain_inputs(inputs)
-    scored_data_list = get_outputs_list(plain_inputs, SCHEMA, IP, PORT, PATH)
-    outputs = set_outputs_dataframe(scored_data_list, OUTPUTS)
-    logDf = set_logging_dataframe(data, outputs)
-    write_logfile(logDf, LOG_PATH)
+
+    data_list = get_data_list(DATA_META['datapath'])
+
+    for i, datafile in enumerate(data_list):
+
+        data = read_data(datafile, nrows=1000)
+
+        target, inputs = set_target_predictors(data,
+                                           VARIABLE_SCHEMA_META['target'],
+                                           VARIABLE_SCHEMA_META['inputs'])
+
+        plain_inputs = set_plain_inputs(inputs)
+
+        scored_data_list = get_outputs_list(plain_inputs,
+                                        MODEL_ENDPOINT_META['schema'],
+                                        MODEL_ENDPOINT_META['ip'],
+                                        MODEL_ENDPOINT_META['port'],
+                                        MODEL_ENDPOINT_META['path'])
+
+        outputs = set_outputs_dataframe(scored_data_list,
+                                    VARIABLE_SCHEMA_META['outputs'])
+
+        logDf = set_logging_dataframe(data, outputs)
+
+        write_logfile(logDf, LOGGING_META['logpath'])
+
+        print_logs(logDf, 300)
+
+if __name__ == '__main__':
+    main()
