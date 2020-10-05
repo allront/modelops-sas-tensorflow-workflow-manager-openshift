@@ -1,0 +1,12 @@
+logging_meta:
+    logfilepath: ../logs/log.csv
+table_meta:
+    prefix: OKDPERF
+    timelabel: H
+db_endpoint_meta:
+    driver: postgresql
+    username: ivnard
+    password: developer
+    hostname: localhost
+    port: 5432
+    dbname: mydb

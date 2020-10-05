@@ -1,12 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 """
 api_caller_model is an application to simulate a business application that calls
 Tensorflow models.
 Steps:
-1- Read the data in a dictionary
-2- Send api scoring request
-3- Store input and output in a log file
+1- Load the data
+2- Score the data via API calls
+3- Log the scored data
 """
 
 import os
@@ -189,22 +190,11 @@ def set_logging_dataframe (data: pd.DataFrame, outputs: pd.DataFrame) -> pd.Data
     return logDf
 
 
-def write_logfile (logDf: pd.DataFrame, logpath: str, prefix: str, sequencenumber: int, timelabel: str,
-                   extention="csv"):
-    '''
-    Write the log file with scored data
-    :param logDf:
-    :param logpath:
-    :param prefix:
-    :param sequencenumber:
-    :param timelabel:
-    :param extention:
-    :return: None
-    '''
-    fulltimelabel = f'{timelabel}{sequencenumber}'
-    logname = f'{prefix}_{sequencenumber}_{fulltimelabel}.{extention}'
+def write_log (logdataframes: list, logpath: str):
+    full_logdf = pd.concat(logdataframes)
+    logname = 'log.csv'
     fulllogpath = f'{logpath}{logname}'
-    logDf.to_csv(fulllogpath, sep=',', index=False)
+    full_logdf.to_csv(fulllogpath, sep=',', index=False)
 
 
 def print_logs (logDf, nrows) -> list:
@@ -280,21 +270,21 @@ def build_score (config):
     return score
 
 
-def build_log (config):
-    LOGGING_META = config['logging_meta']
-
-    def log (data, outputs, i):
+def build_log ():
+    def log (data, outputs):
         logDf = set_logging_dataframe(data, outputs)
-
-        write_logfile(logDf,
-                      LOGGING_META['logpath'],
-                      LOGGING_META['prefix'],
-                      str(i),
-                      LOGGING_META['timelabel'])
-
         return logDf
 
     return log
+
+
+def build_write (config):
+    LOGPATH = config['logging_meta']['logpath']
+
+    def write (logdfs):
+        write_log(logdfs, LOGPATH)
+
+    return write
 
 
 def iterator (config, load, score, log) -> list:
@@ -309,10 +299,11 @@ def iterator (config, load, score, log) -> list:
     datapath = config['data_meta']['datapath']
     data_sources = get_data_list(datapath)
     log_dfs = []
+
     for i, datafile in enumerate(data_sources, start=1):
         data, plain_inputs = load(datafile)
         outputs = score(plain_inputs)
-        logdf = log(data, outputs, i)
+        logdf = log(data, outputs)
         log_dfs.append(logdf)
     return log_dfs
 
@@ -328,7 +319,8 @@ def main ():
     logging.info('Building methods...')
     load = build_load(CONFIG, NROWS)
     score = build_score(CONFIG)
-    log = build_log(CONFIG)
+    log = build_log()
+    write = build_write(CONFIG)
 
     # Iterate the process ---------------------------------------
     # Notice we can consider to parallelize the process
@@ -336,9 +328,15 @@ def main ():
     logging.info('Initiating scoring process...')
     log_dataframes = iterator(CONFIG, load, score, log)
 
+    # Write log file --------------------------------------------
+    logging.info('Creating log file...')
+    write(log_dataframes)
+    logging.info('Logfile created!')
+
     # Print logs ------------------------------------------------
     for log in log_dataframes:
         print_logs(log, NROWS)
+
 
 if __name__ == '__main__':
     main()
