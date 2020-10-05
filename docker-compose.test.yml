@@ -1,0 +1,22 @@
+version: "3.0"
+
+services:
+  score_server:
+    image: tensorflow/serving
+    container_name: tensorflow_server
+    ports:
+      - 8501:8501
+      - 8500:8500
+    volumes:
+      - ./models/20201003065405_1:/models/model
+  score_app:
+    image: score_app:1.0.0
+    container_name: score_app
+    build:
+      context: ./src/monitoring/business_app/
+    ports:
+      - 9999:9999
+    depends_on:
+      - score_server
+    volumes:
+    - ./src/monitoring/business_app/logs:/business_app/logs
