@@ -13,11 +13,16 @@ import os
 import yaml
 import pandas as pd
 import requests
+import uuid
 import time
 import logging
 
+logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
+                    datefmt='%m/%d/%Y %I:%M:%S %p',
+                    level=logging.INFO)
 
-# Helpers
+
+# Helpers --------------------------------------------------------------------------------------------------------------
 def load_yaml (configpath: str) -> dict:
     '''
     Given file path, Read yaml file
@@ -83,7 +88,7 @@ def format_plain_input (string: str) -> str:
     return plain_input_formatted
 
 
-def set_plain_inputs (raw_inputs) -> list:
+def set_plain_inputs (raw_inputs: pd.DataFrame) -> list:
     '''
     Create a list of raw records dictionary
     :param raw_inputs:
@@ -103,7 +108,7 @@ def set_plain_inputs (raw_inputs) -> list:
     return plain_inputs
 
 
-def send_score_request (schema, ip, port, path, plain_input):
+def send_score_request (schema: str, ip: str, port: int, path: str, plain_input: list) -> str:
     '''
     Send API scoring request
     :param schema:
@@ -128,7 +133,7 @@ def send_score_request (schema, ip, port, path, plain_input):
         return plain_output
 
 
-def get_outputs_list (plain_inputs, schema, ip, port, path):
+def get_outputs_list (plain_inputs: list, schema: str, ip: str, port: int, path: str) -> list:
     '''
     Create a list of lists with infered labels and probabilities
     :param plain_inputs:
@@ -148,7 +153,7 @@ def get_outputs_list (plain_inputs, schema, ip, port, path):
     return outputs_list
 
 
-def set_outputs_dataframe (outputs_list, outputs):
+def set_outputs_dataframe (outputs_list: list, outputs: list) -> pd.DataFrame:
     '''
     Set a dictionary with infered labels and probabilities
     :param outputs_list:
@@ -183,14 +188,24 @@ def set_logging_dataframe (data: pd.DataFrame, outputs: pd.DataFrame) -> pd.Data
     logDf = pd.merge(data, outputs, how='inner', left_index=True, right_index=True)
     return logDf
 
-def write_logfile (logDf: pd.DataFrame, logpath: str):
+
+def write_logfile (logDf: pd.DataFrame, logpath: str, prefix: str, sequencenumber: int, timelabel: str,
+                   extention="csv"):
     '''
     Write the log file with scored data
     :param logDf:
     :param logpath:
-    :return:
+    :param prefix:
+    :param sequencenumber:
+    :param timelabel:
+    :param extention:
+    :return: None
     '''
-    logDf.to_csv(logpath, sep=',', index=False)
+    fulltimelabel = f'{timelabel}{sequencenumber}'
+    logname = f'{prefix}_{sequencenumber}_{fulltimelabel}.{extention}'
+    fulllogpath = f'{logpath}{logname}'
+    logDf.to_csv(fulllogpath, sep=',', index=False)
+
 
 def print_logs (logDf, nrows) -> list:
     '''
@@ -199,51 +214,131 @@ def print_logs (logDf, nrows) -> list:
     :param nrows:
     :return:
     '''
+
     # Read dataframe
     raw_output_dictionary = logDf.to_dict()
     i = 0
     while i < nrows:
         # Create the column:value records dictionary to score
         plain_output = {column: row[i] for column, row in raw_output_dictionary.items()}
-        print(plain_output)
+        id = uuid.uuid1().hex
+        logging.info(
+            f'Scoring request {id}. Predicted Class {plain_output["EM_CLASSIFICATION"]} with probability {round(plain_output["EM_PROBABILITY"], 3)}')
         time.sleep(1)
         i += 1
 
-def main ():
 
-    CONFIGPATH = '../config/config.yaml'
-    CONFIG = load_yaml(CONFIGPATH)
-    DATA_META = CONFIG['data_meta']
-    VARIABLE_SCHEMA_META = CONFIG['variables_schema_meta']
-    MODEL_ENDPOINT_META = CONFIG['model_endpoint_meta']
-    LOGGING_META = CONFIG['logging_meta']
+# Build process steps --------------------------------------------------------------------------------------------------
+def build_load (config, nrows):
+    VARIABLE_SCHEMA_META = config['variables_schema_meta']
+    NROWS = nrows
 
-    data_list = get_data_list(DATA_META['datapath'])
+    def load (datafile: str):
+        '''
+        Load process
+        :param datafile:
+        :param nrows:
+        :return: plain_inputs
+        '''
 
-    for i, datafile in enumerate(data_list):
-
-        data = read_data(datafile, nrows=1000)
+        data = read_data(datafile, nrows=NROWS)
 
         target, inputs = set_target_predictors(data,
-                                           VARIABLE_SCHEMA_META['target'],
-                                           VARIABLE_SCHEMA_META['inputs'])
+                                               VARIABLE_SCHEMA_META['target'],
+                                               VARIABLE_SCHEMA_META['inputs'])
 
         plain_inputs = set_plain_inputs(inputs)
 
+        return data, plain_inputs
+
+    return load
+
+
+def build_score (config):
+    MODEL_ENDPOINT_META = config['model_endpoint_meta']
+    VARIABLE_SCHEMA_META = config['variables_schema_meta']
+
+    def score (plain_inputs):
+        '''
+        Score process
+        :param datafile:
+        :param nrows:
+        :return: logDf
+        '''
+
         scored_data_list = get_outputs_list(plain_inputs,
-                                        MODEL_ENDPOINT_META['schema'],
-                                        MODEL_ENDPOINT_META['ip'],
-                                        MODEL_ENDPOINT_META['port'],
-                                        MODEL_ENDPOINT_META['path'])
+                                            MODEL_ENDPOINT_META['schema'],
+                                            MODEL_ENDPOINT_META['ip'],
+                                            MODEL_ENDPOINT_META['port'],
+                                            MODEL_ENDPOINT_META['path'])
 
         outputs = set_outputs_dataframe(scored_data_list,
-                                    VARIABLE_SCHEMA_META['outputs'])
+                                        VARIABLE_SCHEMA_META['outputs'])
 
+        return outputs
+
+    return score
+
+
+def build_log (config):
+    LOGGING_META = config['logging_meta']
+
+    def log (data, outputs, i):
         logDf = set_logging_dataframe(data, outputs)
 
-        write_logfile(logDf, LOGGING_META['logpath'])
+        write_logfile(logDf,
+                      LOGGING_META['logpath'],
+                      LOGGING_META['prefix'],
+                      str(i),
+                      LOGGING_META['timelabel'])
 
-        print_logs(logDf, 300)
+        return logDf
+
+    return log
+
+
+def iterator (config, load, score, log) -> list:
+    '''
+    An iterator of the steps.
+    :param CONFIG:
+    :param load:
+    :param score:
+    :param log:
+    :return: log_dataframes
+    '''
+    datapath = config['data_meta']['datapath']
+    data_sources = get_data_list(datapath)
+    log_dfs = []
+    for i, datafile in enumerate(data_sources, start=1):
+        data, plain_inputs = load(datafile)
+        outputs = score(plain_inputs)
+        logdf = log(data, outputs, i)
+        log_dfs.append(logdf)
+    return log_dfs
+
+
+def main ():
+    # Read configuration ----------------------------------------
+    logging.info('Loading scoring configuration file...')
+    CONFIGPATH = '../config/config.yaml'
+    CONFIG = load_yaml(CONFIGPATH)
+    NROWS = 1000
+
+    # Build methods ---------------------------------------------
+    logging.info('Building methods...')
+    load = build_load(CONFIG, NROWS)
+    score = build_score(CONFIG)
+    log = build_log(CONFIG)
+
+    # Iterate the process ---------------------------------------
+    # Notice we can consider to parallelize the process
+    # But for the demo purpose it is ok
+    logging.info('Initiating scoring process...')
+    log_dataframes = iterator(CONFIG, load, score, log)
+
+    # Print logs ------------------------------------------------
+    for log in log_dataframes:
+        print_logs(log, NROWS)
 
 if __name__ == '__main__':
     main()
