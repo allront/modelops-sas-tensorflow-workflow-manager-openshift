@@ -1,4 +1,4 @@
-version: "3.0"
+version: "3.2" # because kompose conversion
 
 services:
 
@@ -29,8 +29,10 @@ services:
     depends_on:
       - score_app
       - score_server
-    volumes_from:
-      - score_app
+    volumes: #volume_from is not supported in kompose
+      - type: volume
+        source: logs
+        target: /log
 
   logdb:
     image: pushed/postgres
