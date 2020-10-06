@@ -29,13 +29,13 @@ services:
     depends_on:
       - score_app
       - score_server
-    volumes: #volume_from is not supported in kompose
+    volumes: #kompose does not support volumes_from
       - type: volume
         source: logs
         target: /log
 
   logdb:
-    image: pushed/postgres
+    image: pushed/postgres:1.0.0
     container_name: log_pgsql
     ports:
       - 5432:5432
@@ -46,7 +46,7 @@ services:
     restart: always
 
   adminer:
-    image: pushed/adminer
+    image: pushed/adminer:1.0.0
     restart: always
     ports:
       - 8080:8080
