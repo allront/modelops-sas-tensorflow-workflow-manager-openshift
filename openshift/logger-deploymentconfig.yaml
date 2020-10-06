@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: /home/ec2-user/kompose --provider openshift --file ../docker-compose.prod.yml
+      -v convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: logger
+  name: logger
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: logger
+  strategy:
+    resources: {}
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: logger
+    spec:
+      containers:
+      - image: ' '
+        name: logger
+        ports:
+        - containerPort: 9998
+        resources: {}
+        volumeMounts:
+        - mountPath: /log
+          name: logs
+      restartPolicy: Always
+      volumes:
+      - name: logs
+        persistentVolumeClaim:
+          claimName: logs
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - logger
+      from:
+        kind: ImageStreamTag
+        name: logger:1.0.0
+    type: ImageChange
+status: {}

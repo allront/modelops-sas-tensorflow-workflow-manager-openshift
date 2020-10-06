@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: /home/ec2-user/kompose --provider openshift --file ../docker-compose.prod.yml
+      -v convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: logger
+  name: logger
+spec:
+  ports:
+  - name: "9998"
+    port: 9998
+    targetPort: 9998
+  selector:
+    io.kompose.service: logger
+status:
+  loadBalancer: {}

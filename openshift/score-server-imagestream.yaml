@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: score-server
+  name: score-server
+spec:
+  tags:
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: pushed/champion_model:2.0.4
+    generation: null
+    importPolicy: {}
+    name: 2.0.4
+status:
+  dockerImageRepository: ""

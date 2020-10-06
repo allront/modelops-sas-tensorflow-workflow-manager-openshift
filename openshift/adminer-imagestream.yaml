@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ImageStream
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: adminer
+  name: adminer
+spec:
+  tags:
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: pushed/adminer:1.0.0
+    generation: null
+    importPolicy: {}
+    name: 1.0.0
+status:
+  dockerImageRepository: ""

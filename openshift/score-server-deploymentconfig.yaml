@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    kompose.cmd: /home/ec2-user/kompose --provider openshift --file ../docker-compose.prod.yml
+      -v convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: score-server
+  name: score-server
+spec:
+  replicas: 1
+  selector:
+    io.kompose.service: score-server
+  strategy:
+    resources: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: score-server
+    spec:
+      containers:
+      - image: ' '
+        name: tensorflow-server
+        ports:
+        - containerPort: 8501
+        - containerPort: 8500
+        resources: {}
+      restartPolicy: Always
+  test: false
+  triggers:
+  - type: ConfigChange
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - tensorflow_server
+      from:
+        kind: ImageStreamTag
+        name: score-server:2.0.4
+    type: ImageChange
+status: {}
