@@ -1,6 +1,6 @@
 logging_meta:
     #logfilepath: ./logs/log.csv
-    logfilepath: /home/log.csv
+    logfilepath: /log/log.csv
 table_meta:
     prefix: OKDPERF
     timelabel: H

@@ -99,7 +99,7 @@ def load_df_sqltable (engine: sqlalchemy.engine, df: pd.DataFrame, tablename: st
     :param tablename:
     :return: None
     '''
-    df.to_sql(tablename, engine, if_exists='replace')
+    df.to_sql(tablename, engine, if_exists='replace', index=False)
 
 
 # Build process---------------------------------------------------------------------------------------------------------

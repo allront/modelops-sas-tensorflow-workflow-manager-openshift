@@ -25,4 +25,4 @@ model_endpoint_meta:
     path: v1/models/model:classify
 logging_meta:
     #logpath: ./logs/
-    logpath: /home/
+    logpath: /log/

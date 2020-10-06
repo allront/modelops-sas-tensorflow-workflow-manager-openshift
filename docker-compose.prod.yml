@@ -1,21 +1,17 @@
 version: "3.0"
 
 services:
-  
+
   score_server:
-    image: tensorflow/serving
+    image: pushed/champion_model
     container_name: tensorflow_server
     ports:
       - 8501:8501
       - 8500:8500
-    volumes:
-      - ./models/20201003065405_1:/models/model
 
   score_app:
-    image: score_app:1.0.0
+    image: pushed/score_app:1.0.0
     container_name: score_app
-    build:
-      context: ./src/monitoring/business_app/
     ports:
       - 9999:9999
     depends_on:
@@ -24,14 +20,10 @@ services:
       - type: volume
         source: logs
         target: /log
-      #- logs: /business_app/logs
-      #- ./src/monitoring/business_app/logs:/business_app/logs
 
   logger:
-    image: logger:1.0.0
+    image: pushed/logger:1.0.0
     container_name: logger
-    build:
-      context: ./src/monitoring/logging_agent/
     ports:
       - 9998:9998
     depends_on:
@@ -39,12 +31,9 @@ services:
       - score_server
     volumes_from:
       - score_app
-      #volumes:
-      #  - ./src/monitoring/business_app/logs:/logging_agent/logs
-      #- ./src/monitoring/logging_agent/logs:/logging_agent/logs
 
   logdb:
-    image: postgres
+    image: pushed/postgres
     container_name: log_pgsql
     ports:
       - 5432:5432
@@ -55,7 +44,7 @@ services:
     restart: always
 
   adminer:
-    image: adminer
+    image: pushed/adminer
     restart: always
     ports:
       - 8080:8080
