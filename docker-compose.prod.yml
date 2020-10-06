@@ -3,7 +3,7 @@ version: "3.2" # because kompose conversion
 services:
 
   score_server:
-    image: pushed/champion_model
+    image: pushed/champion_model:2.0.4
     container_name: tensorflow_server
     ports:
       - 8501:8501
