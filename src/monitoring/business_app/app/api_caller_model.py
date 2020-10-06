@@ -311,7 +311,7 @@ def iterator (config, load, score, log) -> list:
 def main ():
     # Read configuration ----------------------------------------
     logging.info('Loading scoring configuration file...')
-    CONFIGPATH = '../config/config.yaml'
+    CONFIGPATH = './config/config.yaml'
     CONFIG = load_yaml(CONFIGPATH)
     NROWS = 1000
 

@@ -142,7 +142,7 @@ def build_load_log_sqltables (config):
 def main ():
     # Read configuration ----------------------------------------
     logging.info('Loading configuration file...')
-    CONFIGPATH = '../config/config.yaml'
+    CONFIGPATH = './config/config.yaml'
     CONFIG = load_yaml(CONFIGPATH)
 
     # Build methods ----------------------------------------------

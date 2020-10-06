@@ -1,5 +1,5 @@
 data_meta:
-    datapath: ../data
+    datapath: ./data
 variables_schema_meta:
     target: BAD
     inputs:
@@ -20,8 +20,9 @@ variables_schema_meta:
         - EM_CLASSIFICATION
 model_endpoint_meta:
     schema: http
-    ip: localhost #172.17.0.1 #score_server
+    ip: score_server #localhost #172.17.0.1
     port: 8501
     path: v1/models/model:classify
 logging_meta:
-    logpath: ../logs/
+    #logpath: ./logs/
+    logpath: /home/

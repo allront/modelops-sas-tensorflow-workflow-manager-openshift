@@ -1,6 +1,7 @@
 version: "3.0"
 
 services:
+  
   score_server:
     image: tensorflow/serving
     container_name: tensorflow_server
@@ -9,6 +10,7 @@ services:
       - 8500:8500
     volumes:
       - ./models/20201003065405_1:/models/model
+
   score_app:
     image: score_app:1.0.0
     container_name: score_app
@@ -19,4 +21,44 @@ services:
     depends_on:
       - score_server
     volumes:
-    - ./src/monitoring/business_app/logs:/business_app/logs
+      - type: volume
+        source: logs
+        target: /home
+      #- logs: /business_app/logs
+      #- ./src/monitoring/business_app/logs:/business_app/logs
+
+  logger:
+    image: logger:1.0.0
+    container_name: logger
+    build:
+      context: ./src/monitoring/logging_agent/
+    ports:
+      - 9998:9998
+    depends_on:
+      - score_app
+      - score_server
+    volumes_from:
+      - score_app
+      #volumes:
+      #  - ./src/monitoring/business_app/logs:/logging_agent/logs
+      #- ./src/monitoring/logging_agent/logs:/logging_agent/logs
+
+  logdb:
+    image: postgres
+    container_name: log_pgsql
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ivnard
+      POSTGRES_PASSWORD: developer
+      POSTGRES_DB: mydb
+    restart: always
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  logs:
