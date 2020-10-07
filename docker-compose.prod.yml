@@ -2,33 +2,33 @@ version: "3.2" # because kompose conversion
 
 services:
 
-  score_server:
-    image: docker-registry-default.10.249.20.186.nip.io:80/pushed/champion_model:2.0.4 #it's the docker registry on okd
+  champion_model_server:
+    image: champion_model:1.0.0 #it's the docker registry on okd
     container_name: championmodel
     ports:
       - 8501:8501
       - 8500:8500
 
   score_app:
-    image: docker-registry-default.10.249.20.186.nip.io:80/pushed/score_app:1.0.0
+    image: score_app:1.0.0
     container_name: scoreapp
     ports:
       - 9999:9999
     depends_on:
-      - score_server
+      - champion_model_server
     volumes:
       - type: volume
         source: logs
         target: /log
 
   logger:
-    image: docker-registry-default.10.249.20.186.nip.io:80/pushed/logger:1.0.0
+    image: logger:1.0.0
     container_name: logger
     ports:
       - 9998:9998
     depends_on:
       - score_app
-      - score_server
+      - champion_model_server
     volumes: #kompose does not support volumes_from
       - type: volume
         source: logs

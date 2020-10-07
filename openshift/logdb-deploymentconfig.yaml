@@ -2,7 +2,7 @@ apiVersion: v1
 kind: DeploymentConfig
 metadata:
   annotations:
-    kompose.cmd: /home/ec2-user/kompose --provider openshift --file ../docker-compose.prod.yml
+    kompose.cmd: /opt/kompose --provider openshift --file ../docker-compose.prod.yml
       -v convert
     kompose.version: 1.21.0 (992df58d8)
   creationTimestamp: null
@@ -30,7 +30,7 @@ spec:
         - name: POSTGRES_USER
           value: ivnard
         image: ' '
-        name: log-pgsql
+        name: logpgsql
         ports:
         - containerPort: 5432
         resources: {}
@@ -41,9 +41,9 @@ spec:
   - imageChangeParams:
       automatic: true
       containerNames:
-      - log_pgsql
+      - logpgsql
       from:
         kind: ImageStreamTag
-        name: logdb:1.0.0
+        name: logdb:latest
     type: ImageChange
 status: {}

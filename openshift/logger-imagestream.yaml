@@ -10,7 +10,7 @@ spec:
   - annotations: null
     from:
       kind: DockerImage
-      name: pushed/logger:1.0.0
+      name: logger:1.0.0
     generation: null
     importPolicy: {}
     name: 1.0.0

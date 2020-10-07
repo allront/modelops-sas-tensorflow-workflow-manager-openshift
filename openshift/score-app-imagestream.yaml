@@ -10,7 +10,7 @@ spec:
   - annotations: null
     from:
       kind: DockerImage
-      name: pushed/score_app:1.0.0
+      name: score_app:1.0.0
     generation: null
     importPolicy: {}
     name: 1.0.0
