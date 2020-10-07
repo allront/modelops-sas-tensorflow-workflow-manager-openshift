@@ -3,15 +3,15 @@ version: "3.2" # because kompose conversion
 services:
 
   score_server:
-    image: pushed/champion_model:2.0.4
-    container_name: tensorflow_server
+    image: docker-registry-default.10.249.20.186.nip.io:80/pushed/champion_model:2.0.4 #it's the docker registry on okd
+    container_name: championmodel
     ports:
       - 8501:8501
       - 8500:8500
 
   score_app:
-    image: pushed/score_app:1.0.0
-    container_name: score_app
+    image: docker-registry-default.10.249.20.186.nip.io:80/pushed/score_app:1.0.0
+    container_name: scoreapp
     ports:
       - 9999:9999
     depends_on:
@@ -22,7 +22,7 @@ services:
         target: /log
 
   logger:
-    image: pushed/logger:1.0.0
+    image: docker-registry-default.10.249.20.186.nip.io:80/pushed/logger:1.0.0
     container_name: logger
     ports:
       - 9998:9998
@@ -35,8 +35,8 @@ services:
         target: /log
 
   logdb:
-    image: pushed/postgres:1.0.0
-    container_name: log_pgsql
+    image: docker.io/postgres
+    container_name: logpgsql
     ports:
       - 5432:5432
     environment:
@@ -46,7 +46,7 @@ services:
     restart: always
 
   adminer:
-    image: pushed/adminer:1.0.0
+    image: docker.io/adminer
     restart: always
     ports:
       - 8080:8080
