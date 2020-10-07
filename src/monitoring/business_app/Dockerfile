@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.6
 WORKDIR /business_app
 COPY . /business_app
 RUN pip install --no-cache-dir -r requirements.txt

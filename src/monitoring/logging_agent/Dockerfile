@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.6
 WORKDIR /logging_agent
 COPY . /logging_agent
 RUN pip install --no-cache-dir -r requirements.txt
