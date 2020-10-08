@@ -27,8 +27,8 @@ services:
     ports:
       - 9998:9998
     depends_on:
-      - score_app
-      - champion_model_server
+      - scoreapp
+      - championmodelserver
     volumes: #kompose does not support volumes_from
       - type: volume
         source: logs
