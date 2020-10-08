@@ -2,20 +2,20 @@ version: "3.2" # because kompose conversion
 
 services:
 
-  champion_model_server:
-    image: champion_model:2.0.4 #it's the docker registry on okd
-    container_name: champion_model
+  championmodelserver:
+    image: championmodelserver:1.0.0
+    container_name: championmodelserver
     ports:
       - 8501:8501
       - 8500:8500
 
-  score_app:
-    image: score_app:1.0.0
-    container_name: score_app
+  scoreapp:
+    image: scoreapp:1.0.0
+    container_name: scoreapp
     ports:
       - 9999:9999
     depends_on:
-      - champion_model_server
+      - championmodelserver
     volumes:
       - type: volume
         source: logs
@@ -35,8 +35,8 @@ services:
         target: /log
 
   logdb:
-    image: postgres
-    container_name: log_pgsql
+    image: logdb
+    container_name: logdb
     ports:
       - 5432:5432
     environment:
