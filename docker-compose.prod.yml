@@ -45,7 +45,7 @@ services:
       POSTGRES_DATABASE: mydb #because openshift docs. Dont' like POSTGRES_DB
       PGDATA: /var/lib/postgresql/data/pgdata #because chmod: changing permissions of ‘/var/lib/postgresql/data’: Permission denied error
     volumes:
-      - /home/postgresql/data/pgdat:/var/lib/postgresql/data
+      - /tmp:/var/lib/postgresql/data
     restart: always
 
   adminer:
