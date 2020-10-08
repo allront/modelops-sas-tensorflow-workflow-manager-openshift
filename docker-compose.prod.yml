@@ -42,7 +42,7 @@ services:
     environment:
       POSTGRES_USER: ivnard
       POSTGRES_PASSWORD: developer
-      POSTGRES_DATABASE: mydb #because openshift docs. Dont' like POSTGRES_DB
+      POSTGRES_DB: mydb 
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
     - type: volume
