@@ -35,7 +35,7 @@ services:
         target: /log
 
   logdb:
-    image: logdb
+    image: postgres
     container_name: logdb
     ports:
       - 5432:5432
