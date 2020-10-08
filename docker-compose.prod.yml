@@ -43,6 +43,10 @@ services:
       POSTGRES_USER: ivnard
       POSTGRES_PASSWORD: developer
       POSTGRES_DATABASE: mydb #because openshift docs. Dont' like POSTGRES_DB
+    volumes:
+    - type: volume
+      source: data
+      target: /var/lib/postgresql/data
     restart: always
 
   adminer:
@@ -53,3 +57,4 @@ services:
 
 volumes:
   logs:
+  data:
