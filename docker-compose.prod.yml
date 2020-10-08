@@ -42,7 +42,7 @@ services:
     environment:
       POSTGRES_USER: ivnard
       POSTGRES_PASSWORD: developer
-      POSTGRES_DB: mydb
+      POSTGRES_DATABASE: mydb #because openshift docs. Dont' like POSTGRES_DB
     restart: always
 
   adminer:
