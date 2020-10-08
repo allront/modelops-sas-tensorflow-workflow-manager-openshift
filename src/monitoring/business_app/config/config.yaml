@@ -20,9 +20,9 @@ variables_schema_meta:
         - EM_CLASSIFICATION
 model_endpoint_meta:
     schema: http
-    ip: championmodelserver.sasmlopshmeq.svc #score_server #localhost #172.17.0.1
+    ip: championmodelserver #score_server #localhost #172.17.0.1
     port: 8501
-    path: v1/models/model:classify
+    path: v1/models/champion_model:predict # v1/models/model:classify
 logging_meta:
     #logpath: ./logs/
     logpath: /log/
