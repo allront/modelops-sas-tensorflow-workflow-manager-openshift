@@ -46,8 +46,8 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata #because chmod: changing permissions of ‘/var/lib/postgresql/data’: Permission denied error
     volumes:
       - type: volume
-        source: data
-        target: /var/lib/postgresql/data/pgdata
+        source: /home/postgresql/data/pgdata
+        target: /var/lib/postgresql/data/
     restart: always
 
   adminer:
