@@ -33,6 +33,7 @@ services:
       - type: volume
         source: logs
         target: /log
+    restart: always
 
   logdb:
     image: centos/postgresql-96-centos7 #postgres official docker image has some problem.

@@ -16,6 +16,7 @@ import pandas as pd
 import math
 import sqlalchemy
 from sqlalchemy import create_engine
+import os
 import logging
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
@@ -101,6 +102,14 @@ def load_df_sqltable (engine: sqlalchemy.engine, df: pd.DataFrame, tablename: st
     '''
     df.to_sql(tablename, engine, if_exists='replace', index=False)
 
+def delete_log (datapath: str):
+    '''
+    Delete log file
+    :param datapath:
+    '''
+    if os.path.exists(datapath):
+        os.remove(datapath)
+
 
 # Build process---------------------------------------------------------------------------------------------------------
 
@@ -138,6 +147,19 @@ def build_load_log_sqltables (config):
 
     return load_log_sqltables
 
+def build_remove_log(config):
+
+    LOGFILE_PATH = config['logging_meta']['logfilepath']
+
+    def delete_log ():
+        '''
+        Delete log file
+        :param datapath:
+        '''
+        if os.path.exists(LOGFILE_PATH):
+            os.remove(LOGFILE_PATH)
+    return delete_log
+
 
 def main ():
     # Read configuration ----------------------------------------
@@ -149,6 +171,7 @@ def main ():
     logging.info('Building methods...')
     extract = build_extract(CONFIG, None, chunk_size=1000)
     load = build_load_log_sqltables(CONFIG)
+    remove = build_remove_log(CONFIG)
 
     # Run the process ---------------------------------------
     logging.info('Reading log file for cluster file system...')
@@ -156,6 +179,8 @@ def main ():
     logging.info('Loading performance logs in the backend postgres db...')
     load(logdfs)
     logging.info('Performance logs loaded successfully!')
+    remove() # It's just for the demo. We should define a logrotate on k8s
+    logging.info('Log file removed!')
 
 if __name__ == '__main__':
     main()
