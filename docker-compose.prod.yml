@@ -19,7 +19,7 @@ services:
     volumes:
       - type: volume
         source: logs
-        target: /log
+        target: /log:z
 
   logger:
     image: logger:1.0.0
@@ -32,7 +32,7 @@ services:
     volumes: #kompose does not support volumes_from
       - type: volume
         source: logs
-        target: /log
+        target: /log:z
     restart: always
 
   logdb:
