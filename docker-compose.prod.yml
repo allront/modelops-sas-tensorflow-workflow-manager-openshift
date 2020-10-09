@@ -43,14 +43,6 @@ services:
       POSTGRESQL_USER: ivnard
       POSTGRESQL_PASSWORD: developer
       POSTGRESQL_DATABASE: mydb
-#      POSTGRES_USER: ivnard
-#      POSTGRES_PASSWORD: developer
-#      POSTGRES_DB: mydb
-#      PGDATA: /var/lib/postgresql/data/pgdata #Documentation is not so clear. You have to create a subfolder
-#    volumes:
-#    - type: volume
-#      source: data
-#      target: /var/lib/postgresql/data
     restart: always
 
   adminer:
@@ -61,4 +53,3 @@ services:
 
 volumes:
   logs:
-  #data:
