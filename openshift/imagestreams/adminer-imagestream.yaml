@@ -10,7 +10,7 @@ spec:
   - annotations: null
     from:
       kind: DockerImage
-      name: docker.io/adminer
+      name: adminer
     generation: null
     importPolicy: {}
     name: latest

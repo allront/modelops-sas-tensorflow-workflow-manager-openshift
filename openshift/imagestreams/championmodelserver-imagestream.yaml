@@ -3,14 +3,14 @@ kind: ImageStream
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: champion-model-server
-  name: champion-model-server
+    io.kompose.service: championmodelserver
+  name: championmodelserver
 spec:
   tags:
   - annotations: null
     from:
       kind: DockerImage
-      name: champion_model:1.0.0
+      name: championmodelserver:1.0.0
     generation: null
     importPolicy: {}
     name: 1.0.0

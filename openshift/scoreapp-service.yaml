@@ -2,19 +2,19 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kompose.cmd: /opt/kompose --provider openshift --file ../docker-compose.prod.yml
+    kompose.cmd: /home/ec2-user/kompose --provider openshift --file ../docker-compose.prod.yml
       -v convert
     kompose.version: 1.21.0 (992df58d8)
   creationTimestamp: null
   labels:
-    io.kompose.service: score-app
-  name: score-app
+    io.kompose.service: scoreapp
+  name: scoreapp
 spec:
   ports:
   - name: "9999"
     port: 9999
     targetPort: 9999
   selector:
-    io.kompose.service: score-app
+    io.kompose.service: scoreapp
 status:
   loadBalancer: {}

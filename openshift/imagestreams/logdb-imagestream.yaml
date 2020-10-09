@@ -3,16 +3,16 @@ kind: ImageStream
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: score-app
-  name: score-app
+    io.kompose.service: logdb
+  name: logdb
 spec:
   tags:
   - annotations: null
     from:
       kind: DockerImage
-      name: score_app:1.0.0
+      name: centos/postgresql-96-centos7
     generation: null
     importPolicy: {}
-    name: 1.0.0
+    name: latest
 status:
   dockerImageRepository: ""
