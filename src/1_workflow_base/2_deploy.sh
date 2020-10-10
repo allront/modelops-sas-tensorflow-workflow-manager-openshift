@@ -16,7 +16,7 @@
 #   2 - Push the image to Openshift
 
 # Variables
-TAG=${1-1.0.2}
+TAG=${1-1.0.1}
 REGISTRY_HOSTNAME=${2:-docker-registry-default.10.249.20.186.nip.io}
 REGISTRY_PORT=${3:-80}
 IMAGESTREAM=${4-sasmlopshmeq/championmodelserver}
