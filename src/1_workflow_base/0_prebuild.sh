@@ -11,20 +11,20 @@
 # Variables
 PROJECT_NAME=${1:-sas_modelops_tensorflow_openshift}
 CONFIG_FILE="environment.yaml"
-OUTFOLDER="/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/base/prebuild/"
+OUTFOLDER=${PROJECT_DIR}/src/1_workflow_base/prebuild/
 MODEL_DIR="/model"
 
 
 # 1 - Clean target repo
 echo "$(date '+%x %r') INFO Setup"
-cd $OUTFOLDER
-if [ -d "$MODEL_DIR" ]; then
-  rm -Rf MODEL_DIR
-  mkdir MODEL_DIR
+cd "$OUTFOLDER"
+if [ -d "${MODEL_DIR}" ]; then
+  rm -Rf "${MODEL_DIR}"
+  mkdir -m 777 "${MODEL_DIR}"
 fi
 
 # 2 - Execute python script
 echo "$(date '+%x %r') INFO Execute prebuild.py"
-export PYTHONPATH=${PYTHONPATH}:/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/env/lib/python3.7/site-packages/
-#chmod +x ./prebuild.py
+export PYTHONPATH=${PYTHONPATH}:${PROJECT_DIR}/env/lib/python3.7/site-packages/
+sudo chmod +x ./prebuild.py
 python prebuild.py ${PROJECT_NAME} ${CONFIG_FILE}

@@ -1,4 +1,4 @@
-filename logfile '/opt/demos/sas_workflow_openshift_demo/src/base/2_deploy.log';
+filename logfile '/opt/demos/sas_workflow_openshift_demo/logs/2_deploy.log';
 
 proc printto log=logfile;
 run;
