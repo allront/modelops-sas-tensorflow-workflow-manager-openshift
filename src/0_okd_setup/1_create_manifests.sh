@@ -16,13 +16,13 @@ OKD_DIR=${PROJECT_DIR}/${OKD_NAME}
 DOCKER_COMPOSE_FILEPATH=${PROJECT_DIR}/${DOCKER_COMPOSE_FILENAME}
 
 # 1 - Clean openshift directory...
-echo "$(date '+%x %r') Cleaning Openshift directory..."
+echo "$(date '+%x %r') INFO Cleaning Openshift directory..."
 if [ -d "${OKD_DIR}" ]; then
   rm -Rf "${OKD_DIR}"
   mkdir -m 777 "${OKD_DIR}"
 fi
 
 # 2 - Execute kompose convert command...
-echo "$(date '+%x %r') Converting the ${DOCKER_COMPOSE_FILENAME} in K8s manifests..."
+echo "$(date '+%x %r') INFO Converting the ${DOCKER_COMPOSE_FILENAME} in K8s manifests..."
 cd "${OKD_DIR}"
 /home/ec2-user/kompose --provider openshift --file "${DOCKER_COMPOSE_FILEPATH}" -v convert

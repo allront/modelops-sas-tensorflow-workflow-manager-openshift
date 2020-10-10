@@ -19,20 +19,20 @@ SERVICE_ACCOUNT=${3:-ivnard}
 TAG=${PROJECT_NAME}:${SERVICE_ACCOUNT}
 
 # 1 - Create new project
-echo "$(date '+%x %r') Creating new project..."
+echo "$(date '+%x %r') INFO Creating new project..."
 oc new-project ${PROJECT_NAME} --display-name="${DISPLAY_NAME}"
 
 # 2 - Create service account (default is ivnard...)
-echo "$(date '+%x %r') Creating ivnard service account..."
+echo "$(date '+%x %r') INFO Creating ivnard service account..."
 oc create serviceaccount ${SERVICE_ACCOUNT}
 
 # 3 - Add policy roles
-echo "$(date '+%x %r') Adding policy role to the ${SERVICE_ACCOUNT} service account..."
+echo "$(date '+%x %r') INFO Adding policy role to the ${SERVICE_ACCOUNT} service account..."
 oc policy add-role-to-user system:image-builder system:serviceaccount:${TAG}
 oc policy add-role-to-user edit system:serviceaccount:${TAG}
 
 # 4 - Print service account info and ask to export the token
-echo "$(date '+%x %r') Describing ${SERVICE_ACCOUNT} ..."
+echo "$(date '+%x %r') INFO Describing ${SERVICE_ACCOUNT} ..."
 oc describe sa ivnard
 echo ""
 echo "------------------------------------------------------------"

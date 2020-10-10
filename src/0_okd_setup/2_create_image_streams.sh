@@ -11,7 +11,7 @@
 OKD_NAME=${1:-openshift}
 OKD_DIR=${PROJECT_DIR}/${OKD_NAME}
 
-echo "$(date '+%x %r') Initiatinng process to create image streams..."
+echo "$(date '+%x %r') INFO Initiating process to create image streams..."
 for m in "${OKD_DIR}"/*imagestream.yaml
 do
   echo "Processing the ${m} manifest..."
