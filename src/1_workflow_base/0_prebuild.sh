@@ -12,7 +12,7 @@
 PROJECT_NAME=${1:-sas_modelops_tensorflow_openshift}
 CONFIG_FILE="environment.yaml"
 OUTFOLDER=${PROJECT_DIR}/src/1_workflow_base/prebuild/
-MODEL_DIR="/model"
+MODEL_DIR="./model"
 
 
 # 1 - Clean target repo
