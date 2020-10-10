@@ -14,13 +14,13 @@
 
 # Variables
 PROJECT_NAME=${1:-sasmlopshmeq}
-DISPLAY_NAME=${2:-'SAS ModelOps HMEQ Tensorflow'}
+DISPLAY_NAME=${2:-"SAS ModelOps HMEQ Tensorflow"}
 SERVICE_ACCOUNT=${3:-ivnard}
 TAG=${PROJECT_NAME}:${SERVICE_ACCOUNT}
 
 # 1 - Create new project
 echo "$(date '+%x %r') Creating new project..."
-oc new-project ${PROJECT_NAME} --display-name=${DISPLAY_NAME}
+oc new-project ${PROJECT_NAME} --display-name="${DISPLAY_NAME}"
 
 # 2 - Create service account (default is ivnard...)
 echo "$(date '+%x %r') Creating ivnard service account..."
@@ -34,6 +34,16 @@ oc policy add-role-to-user edit system:serviceaccount:${TAG}
 # 4 - Print service account info and ask to export the token
 echo "$(date '+%x %r') Describing ${SERVICE_ACCOUNT} ..."
 oc describe sa ivnard
-echo "Please select on token secret running the following command:"
+echo ""
+echo "------------------------------------------------------------"
+echo "Please:"
+echo ""
+echo "1. Select on token secret running the following command:"
+echo ""
 echo "oc describe secret ivnard-token-<id>."
-echo "Export the token in a TOKEN variable"
+echo ""
+echo "2. Export the token in a TOKEN variable"
+echo ""
+echo "export TOKEN=<tokenid>"
+echo ""
+echo "------------------------------------------------------------"
