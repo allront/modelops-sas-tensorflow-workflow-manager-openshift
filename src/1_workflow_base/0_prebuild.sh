@@ -16,7 +16,7 @@ MODEL_DIR="/model"
 
 
 # 1 - Clean target repo
-echo "$(date '+%x %r') INFO Setup"
+echo "$(date '+%x %r') INFO Setup Model Folder..."
 cd "$OUTFOLDER"
 if [ -d "${MODEL_DIR}" ]; then
   rm -Rf "${MODEL_DIR}"
