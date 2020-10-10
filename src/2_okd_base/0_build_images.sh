@@ -1,5 +1,5 @@
 # O_build_images.sh
-# O_build_images.sh is
+# O_build_images.sh is a script for building images for Openshift
 #
 # Variables:
 # TAG=${1}
