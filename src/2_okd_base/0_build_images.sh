@@ -26,7 +26,7 @@ TOKEN=${5:-eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2Vh
 
 REGISTRY_HOST=$REGISTRY_HOSTNAME:$REGISTRY_PORT
 
-SCORE_APP_IMAGE_NAME=score_app
+SCORE_APP_IMAGE_NAME=scoreapp
 SCORE_APP_TAG=${SCORE_APP_IMAGE_NAME}:${TAG}
 SCORE_APP_IMAGESTREAM=sasmlopshmeq/${SCORE_APP_IMAGE_NAME}
 SCORE_APP_BUILDPATH=${PROJECT_DIR}/src/2_okd_base/business_app/
@@ -48,24 +48,33 @@ docker login "$REGISTRY_HOST" -u "$USERNAME" -p "$TOKEN"
 #   2 - Tag docker images
 #   3 - Push docker images
 
+echo ""
 echo "$(date '+%x %r') INFO Initiating process to ${SCORE_APP_IMAGE_NAME} image..."
-echo "Build ${SCORE_APP_IMAGE_NAME} image..."
+echo ""
+echo "$(date '+%x %r') INFO Build ${SCORE_APP_IMAGE_NAME} image..."
+echo ""
 docker build -t "${SCORE_APP_TAG}" "$SCORE_APP_BUILDPATH"
 echo ""
-echo "Tag ${SCORE_APP_IMAGE_NAME} image..."
+echo "$(date '+%x %r') INFO Tag ${SCORE_APP_IMAGE_NAME} image..."
+echo ""
 docker tag "${SCORE_APP_TAG}" "${SCORE_APP_FULL_QUALIFIED_IMAGE_NAME}"
 echo ""
-echo "Push ${SCORE_APP_IMAGE_NAME} image..."
+echo "$(date '+%x %r') INFO Push ${SCORE_APP_IMAGE_NAME} image..."
+echo ""
 docker push "${SCORE_APP_FULL_QUALIFIED_IMAGE_NAME}"
 
 echo ""
 echo ""
 echo "$(date '+%x %r') INFO Initiating process to ${LOGGER_IMAGE_NAME} image..."
-echo "Build ${LOGGER_IMAGE_NAME} image..."
+echo ""
+echo "$(date '+%x %r') INFO Build ${LOGGER_IMAGE_NAME} image..."
+echo ""
 docker build -t  "${LOGGER_TAG}" "$LOGGER_BUILDPATH"
 echo ""
-echo "Tag ${LOGGER_IMAGE_NAME} image..."
+echo "$(date '+%x %r') INFO Tag ${LOGGER_IMAGE_NAME} image..."
+echo ""
 docker tag "${LOGGER_TAG}" "${LOGGER_FULL_QUALIFIED_IMAGE_NAME}"
 echo ""
-echo "Push ${LOGGER_IMAGE_NAME} image..."
+echo "$(date '+%x %r') INFO Push ${LOGGER_IMAGE_NAME} image..."
+echo ""
 docker push "${LOGGER_FULL_QUALIFIED_IMAGE_NAME}"
