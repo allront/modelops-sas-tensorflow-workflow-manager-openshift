@@ -9,7 +9,7 @@
 # Variables
 OKD_NAME=${1:-openshift}
 OKD_DIR=${PROJECT_DIR}/${OKD_NAME}
-IMAGE_STREAMS_DIR=./ImageStreams
+IMAGE_STREAMS_DIR=./imagestream
 
 cd "${OKD_DIR}"
 
@@ -22,7 +22,7 @@ fi
 
 # 1 - Move Image stream files
 echo "$(date '+%x %r') INFO Move imagestream manifests in ${IMAGE_STREAMS_DIR} directory..."
-mv *imagestream.yaml "${IMAGE_STREAMS_DIR}"
+mv *imagestream.yaml ${IMAGE_STREAMS_DIR}
 
 # 2 - Apply manifests
 echo "$(date '+%x %r') INFO Applying manifests..."
