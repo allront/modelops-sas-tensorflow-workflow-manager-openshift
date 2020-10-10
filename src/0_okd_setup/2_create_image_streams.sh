@@ -10,11 +10,11 @@
 # Variables
 OKD_NAME=${1:-openshift}
 OKD_DIR=${PROJECT_DIR}/${OKD_NAME}
-IMAGESTREAMFILES="${OKD_DIR}/*.imagestream.yaml"
 
-for m in ${IMAGESTREAMFILES}
+echo "$(date '+%x %r') Initiatinng process to create image streams..."
+for m in "${OKD_DIR}"/*imagestream.yaml
 do
   echo "Processing the ${m} manifest..."
   oc create -f "${m}"
-  echo "Image stream of ${m} manifest created!"
+  echo ""
 done
