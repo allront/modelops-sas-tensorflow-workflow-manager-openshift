@@ -31,12 +31,12 @@ Below **the high-level architecture of the solution**:
 3. The Champion model is subjected to a validation process. If it passes, the model is deployed on **RedHat Openshift (OKD)**
 thanks to **SAS Workflow Manager** using **Google's Tensorflow serving image** in a OKD project previously created by IT Cluster Admin.  
 
-4. IT deploys deploys an application stack to simulate scoring requests and includes a dedicated sidecar container for pushing logs directly to a backend 
+4. IT deploys an application stack to simulate scoring requests and includes a dedicated sidecar container for pushing logs directly to a backend 
 Logs are store in a **PostgresSQL** database and consumed by performance monitoring service that sends a notification in case model underscores. 
 
 Assuming time goes and model starts underperformed...
 
-5. **SAS Workflow Manager** triggers automated retraining based on the on-field data.
+5. **SAS Workflow Manager** triggers automated retraining based on the on-field data and sends message to **Microsoft Teams**.
 
 6. Data Scientist receives the notification and he/she starts a new training process. 
 
