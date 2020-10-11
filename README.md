@@ -10,9 +10,7 @@ And the answer is: **Yes, of course. Thanks to SAS Workflow Manager**
 
 **Simple product demos are enough anymore.** 
 
-And when we talk about operationalizing open source models, 
-
-**customer asks to prove how SAS Model Manager can be integrated with 3th party systems**.
+And when we talk about operationalizing open source models, **customer asks to prove how SAS Model Manager can be integrated with 3th party systems**.
 
 In this scenario, we deal with one of the common cases we face recently. 
 
