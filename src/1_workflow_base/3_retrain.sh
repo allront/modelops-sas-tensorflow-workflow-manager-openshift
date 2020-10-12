@@ -9,7 +9,7 @@
 #   2 - Register the model in SAS Model Manager with a new version
 
 # Variables
-WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain/
+WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
 
 # TRANSFORM_LOAD variables
 TRANSFORM_LOAD_DOCKERFILE_PATH=${WORKDIR}/0_transform_load/
@@ -32,6 +32,6 @@ echo "$(date '+%x %r') INFO Clean docker enviroment if needed"
 echo ""
 
 echo "$(date '+%x %r') INFO Running the transform_load container..."
-docker container run --name ${CONTAINER_NAME} -v ${DATAPATH}:/trasform_load/data ${TL_IMAGE_NAME}
+docker container run --name ${CONTAINER_NAME} -v ${DATAPATH}:/transform_load/data ${TL_IMAGE_NAME}
 echo ""
 
