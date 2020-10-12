@@ -15,7 +15,7 @@ WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
 TRANSFORM_LOAD_DOCKERFILE_PATH=${WORKDIR}/0_transform_load/
 TL_IMAGE_NAME=transform_load:1.0.0
 CONTAINER_NAME="tl_$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8)"
-DATA_PATH=${PROJECT_DIR}/data/retrain
+DATA_PATH=${PROJECT_DIR}/data/retrain/
 
 # 0 - Transform and Load the performance tables
 

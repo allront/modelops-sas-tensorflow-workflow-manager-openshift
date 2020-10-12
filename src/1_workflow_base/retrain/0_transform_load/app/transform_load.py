@@ -50,17 +50,27 @@ def read_data (datapath: str) -> pd.DataFrame:
     :param datapath:
     :return: data
     '''
-    data = pd.read_csv(datapath, sep=',')
-    return data
+    df = pd.read_csv(datapath, sep=',')
+    return df
 
 
-def create_training_dataframe (datapaths: list) -> pd.DataFrame:
+def select_columns (dataframe: pd.DataFrame, labels: list) -> pd.DataFrame:
+    '''
+    Select columns for retraining
+    :param labels:
+    :return:
+    '''
+    df = dataframe[[labels]]
+    return df
+
+
+def create_training_dataframe (datapaths: list, labels: list) -> pd.DataFrame:
     '''
     Append dataframes one to another
     :param datapaths:
     :return:
     '''
-    dfs = [read_data(datapath) for datapath in datapaths]
+    dfs = [select_columns(read_data(datapath), labels) for datapath in datapaths]
     train_df = pd.concat(dfs)
     return train_df
 
@@ -74,17 +84,18 @@ def write_traindf (train_df: pd.DataFrame, datapath: str):
     '''
 
     filename = 'retrain.csv'
-    fulldatapath = os.path.join(datapath, filename)
-    train_df.to_csv(fulldatapath, sep=',', index=False)
+    full_datapath = os.path.join(datapath, filename)
+    train_df.to_csv(full_datapath, sep=',', index=False)
 
 
 # Build Load -----------------------------------------------------------------------------------------------------------
 def build_transform (config):
     DATAMETA = config['data_meta']
+    VARIABLE_META_DATA = config['variables_schema_meta']
 
     def transform ():
-        datalist = get_data_list(DATAMETA['datapath'])
-        train_df = create_training_dataframe(datalist)
+        datalist = get_data_list(DATAMETA['datapath_in'])
+        train_df = create_training_dataframe(datalist, VARIABLE_META_DATA['labels'])
         return train_df
 
     return transform
@@ -94,13 +105,12 @@ def build_load (config):
     DATAMETA = config['data_meta']
 
     def load (train_df: pd.DataFrame):
-        write_traindf(train_df, DATAMETA['datapath'])
+        write_traindf(train_df, DATAMETA['datapath_out'])
 
     return load
 
 
 def main ():
-
     # Read configuration ----------------------------------------
     logging.info('Loading configuration file...')
     CONFIGPATH = './config/config.yaml'
@@ -119,6 +129,7 @@ def main ():
     logging.info('Creating retrain file...')
     load(train_df)
     logging.info('Retrain file created!')
+
 
 if __name__ == '__main__':
     main()
