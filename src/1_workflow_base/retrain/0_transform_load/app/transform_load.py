@@ -60,7 +60,7 @@ def select_columns (dataframe: pd.DataFrame, labels: list) -> pd.DataFrame:
     :param labels:
     :return:
     '''
-    df = dataframe[[labels]]
+    df = dataframe[labels]
     return df
 
 

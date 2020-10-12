@@ -12,15 +12,15 @@
 WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
 
 # TRANSFORM_LOAD variables
-TRANSFORM_LOAD_DOCKERFILE_PATH=${WORKDIR}/0_transform_load/
+TRANSFORM_LOAD_PATH=${WORKDIR}/0_transform_load/
 TL_IMAGE_NAME=transform_load:1.0.0
 CONTAINER_NAME="tl_$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 8)"
-DATA_PATH=${PROJECT_DIR}/data/retrain/
+DATA_PATH=${TRANSFORM_LOAD_PATH}/data/retrain
 
 # 0 - Transform and Load the performance tables
 
 echo "$(date '+%x %r') INFO Setup transform_load container..."
-docker build -t ${TL_IMAGE_NAME} ${TRANSFORM_LOAD_DOCKERFILE_PATH}
+docker build -t ${TL_IMAGE_NAME} ${TRANSFORM_LOAD_PATH}
 echo ""
 
 echo "$(date '+%x %r') INFO Clean docker enviroment if needed"

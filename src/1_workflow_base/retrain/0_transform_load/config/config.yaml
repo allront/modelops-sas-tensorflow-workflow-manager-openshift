@@ -1,6 +1,6 @@
 data_meta:
-    datapath_in: ./data/val/
-    datapath_out: ./data/retrain/
+    datapath_in: './data/val'
+    datapath_out: './data/retrain'
 variables_schema_meta:
     labels:
         - BAD
