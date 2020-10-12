@@ -191,6 +191,12 @@ def set_logging_dataframe (data: pd.DataFrame, outputs: pd.DataFrame) -> pd.Data
 
 
 def write_log (logdataframes: list, logpath: str):
+    '''
+    Write the log.csv file
+    :param logdataframes:
+    :param logpath:
+    :return:
+    '''
     full_logdf = pd.concat(logdataframes)
     logname = 'log.csv'
     fulllogpath = f'{logpath}{logname}'
