@@ -325,6 +325,8 @@ def build_train_evaluate (config):
     LOGS_DIR = config['logs_dir']
 
     def train_evaluate (data_train, data_test):
+        data_train = data_train.copy()
+        data_test = data_test.copy()
         # Get dataset
         train_input_fn = get_dataset(data_train, TARGET, batch_size=500, mode='train')
         test_input_fn = get_dataset(data_test, TARGET, batch_size=500)
