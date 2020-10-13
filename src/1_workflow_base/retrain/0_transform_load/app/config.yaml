@@ -1,0 +1,16 @@
+data_meta:
+    datapath_in: '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/data/val'
+    datapath_out: '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/data/retrain'
+variables_schema_meta:
+    labels:
+        - BAD
+        - LOAN
+        - MORTDUE
+        - VALUE
+        - YOJ
+        - DEROG
+        - DELINQ
+        - CLAGE
+        - NINQ
+        - CLNO
+        - DEBTINC

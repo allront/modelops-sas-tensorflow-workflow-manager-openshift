@@ -113,7 +113,7 @@ def build_load (config):
 def main ():
     # Read configuration ----------------------------------------
     logging.info('Loading configuration file...')
-    CONFIGPATH = './config/config.yaml'
+    CONFIGPATH = '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/1_workflow_base/retrain/0_transform_load/app/config.yaml'
     CONFIG = load_yaml(CONFIGPATH)
 
     # Build methods ---------------------------------------------
