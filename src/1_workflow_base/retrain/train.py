@@ -104,3 +104,6 @@ def main():
     # # Model directories
     # LOGS_DIR = os.path.join(BASE_DIR_PATH, '../logs')
     # MODELS_DIR = os.path.join(BASE_DIR_PATH, '../models')
+
+if __name__ == "__main__":
+    main()
