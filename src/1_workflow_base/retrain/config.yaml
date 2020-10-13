@@ -1,6 +1,7 @@
 data_meta:
     datapath_in: '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/data/val'
     datapath_out: '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/data/retrain'
+    datafile: 'retrain.csv'
 variables_schema_meta:
     labels:
         - BAD

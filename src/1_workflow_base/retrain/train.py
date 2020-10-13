@@ -70,9 +70,9 @@ def split_raw_train_test (raw_df: pd.DataFrame, test_size:float, random_state:in
 # Build Pipeline -------------------------------------------------------------------------------------------------------
 def build_data(config):
     DATAMETA = config['data_meta']
-
+    FULL_DATAPATH = os.path.join(DATAMETA['datapath_out'], DATAMETA['datafile'])
     def data(test_size=0.1, random_state=8, debug=False):
-        raw_df = read_data(DATAMETA['datapath_in'])
+        raw_df = read_data(FULL_DATAPATH)
         data_train, data_test = split_raw_train_test(raw_df, test_size, random_state)
         if debug:
             logging.debug("Printing some rows...")
