@@ -40,3 +40,4 @@ cd ${WORKDIR}
 export PYTHONPATH=${PYTHONPATH}:${PROJECT_DIR}/env/lib/python3.7/site-packages/
 sudo chmod +x ./transform_load.py
 python transform_load.py
+
