@@ -256,7 +256,7 @@ def get_dataset (dataframe: pd.DataFrame, target: str, num_epochs=2, mode='eval'
 
     return input_fn
 
-def get_features(num_features: list, cat_features: list, labels_dict: dict) -> list:
+def get_features(dataframe: pd.DataFrame, num_features: list, cat_features: list, labels_dict: dict) -> list:
     '''
     Return a list of tf feature columns
     :param num_features:
@@ -264,6 +264,8 @@ def get_features(num_features: list, cat_features: list, labels_dict: dict) -> l
     :param labels_dict:
     :return: feature_columns
     '''
+
+    data_train = dataframe.copy()
     # Create an empty list for feature
     feature_columns = []
 
