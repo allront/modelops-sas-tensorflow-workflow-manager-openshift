@@ -285,7 +285,7 @@ def get_features(data_train: pd.DataFrame, num_features: list, cat_features: lis
 
     return feature_columns
 
-def build_estimator (feature_columns, learning_rate=0.1):
+def build_estimator (feature_columns, learning_rate=0.1, logs_dir: str):
     '''
     Given feature columns,
     build a LinearClassifier Estimator
@@ -298,7 +298,7 @@ def build_estimator (feature_columns, learning_rate=0.1):
     runconfig = tf.estimator.RunConfig(tf_random_seed=8)
 
     linear_classifier_base = tf.estimator.LinearClassifier(
-        model_dir=LOGS_DIR,
+        model_dir=logs_dir,
         feature_columns=feature_columns,
         n_classes=2,
         optimizer=tf.keras.optimizers.SGD(learning_rate=learning_rate),
@@ -334,7 +334,7 @@ def build_train_evaluate (config):
         # Clean all
         shutil.rmtree(LOGS_DIR, ignore_errors=True)
         # Get estimator
-        estimator = build_estimator(feature_columns, learning_rate=0.1)
+        estimator = build_estimator(feature_columns, learning_rate=0.1, LOGS_DIR)
         # Train the estimator
         estimator_train = estimator.train(input_fn=train_input_fn)
         # Evaluate
