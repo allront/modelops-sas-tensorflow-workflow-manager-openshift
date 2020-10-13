@@ -8,8 +8,8 @@
 #   1 - Train the tensorflow model
 #   2 - Register the model in SAS Model Manager with a new version
 
-## Variables
-#WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
+# Variables
+WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
 #
 ## TRANSFORM_LOAD variables
 #TRANSFORM_LOAD_PATH=${WORKDIR}/0_transform_load/
@@ -36,6 +36,7 @@
 #echo ""
 
 echo "$(date '+%x %r') INFO Execute prebuild.py"
+cd ${WORKDIR}
 export PYTHONPATH=${PYTHONPATH}:${PROJECT_DIR}/env/lib/python3.7/site-packages/
-sudo chmod +x ./0_transform_load/app/transform_load.py
+sudo chmod +x ./transform_load.py
 python transform_load.py
