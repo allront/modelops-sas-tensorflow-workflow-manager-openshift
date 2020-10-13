@@ -1,6 +1,6 @@
 
 #Declare target without dependecies
-.PHONY: help setup
+.PHONY: help setup clean
 
 #Define minimum variables
 BASEDIR=/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/
@@ -21,3 +21,6 @@ setup:
        	pip install -r requirements.txt; \
         mkdir -m 777 logs; \
 
+#Clean env
+clean:
+    rm -Rf ./${VENVNAME}
