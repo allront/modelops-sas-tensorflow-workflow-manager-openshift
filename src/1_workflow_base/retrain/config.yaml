@@ -15,3 +15,37 @@ variables_schema_meta:
         - NINQ
         - CLNO
         - DEBTINC
+        - REASON
+        - JOB
+    target: BAD
+    numerical_predictors:
+        - LOAN
+        - MORTDUE
+        - VALUE
+        - YOJ
+        - DEROG
+        - DELINQ
+        - CLAGE
+        - NINQ
+        - CLNO
+        - DEBTINC
+    categorical_predictors:
+        - REASON
+        - JOB
+labels_dict:
+    REASON:
+        - DebtCon
+        - HomeImp
+        - Missing
+    JOB:
+        - Other
+        - Sales
+        - ProfExe
+        - Office
+        - Mgr
+        - Self
+        - Missing
+logs_dir: '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs'
+
+
+
