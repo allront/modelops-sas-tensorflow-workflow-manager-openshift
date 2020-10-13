@@ -45,6 +45,8 @@ labels_dict:
         - Mgr
         - Self
         - Missing
+model_meta:
+    learning_rate: 0.1
 logs_dir: '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs'
 
 

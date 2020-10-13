@@ -285,7 +285,7 @@ def get_features(data_train: pd.DataFrame, num_features: list, cat_features: lis
 
     return feature_columns
 
-def build_estimator (feature_columns, learning_rate=0.1, logs_dir: str):
+def build_estimator (feature_columns, learning_rate, logs_dir: str):
     '''
     Given feature columns,
     build a LinearClassifier Estimator
@@ -323,6 +323,7 @@ def build_train_evaluate (config):
     CATEGORICAL_VARIABLES = VARIABLE_SCHEMA_META['categorical_predictors']
     NUMERICAL_VARIABLES = VARIABLE_SCHEMA_META['numerical_predictors']
     LABELS_DICT = config['labels_dict']
+    MODEL_META = config['model_meta']
     LOGS_DIR = config['logs_dir']
 
     def train_evaluate (data_train, data_test):
@@ -334,7 +335,7 @@ def build_train_evaluate (config):
         # Clean all
         shutil.rmtree(LOGS_DIR, ignore_errors=True)
         # Get estimator
-        estimator = build_estimator(feature_columns, learning_rate=0.1, LOGS_DIR)
+        estimator = build_estimator(feature_columns, MODEL_META['learning_rate'], LOGS_DIR)
         # Train the estimator
         estimator_train = estimator.train(input_fn=train_input_fn)
         # Evaluate
