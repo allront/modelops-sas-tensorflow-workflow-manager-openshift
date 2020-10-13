@@ -188,7 +188,7 @@ def _get_std_parameter (dataframe: pd.DataFrame, column: str) -> float:
     return std
 
 
-def _get_normalization_parameters (numerical_variables: list) -> dict:
+def _get_normalization_parameters (data_train: pd.DataFrame, numerical_variables: list) -> dict:
     '''
     For each numerical variable, calculate mean and std based on training dataframe
     :param numerical_variables:
@@ -256,7 +256,7 @@ def get_dataset (dataframe: pd.DataFrame, target: str, num_epochs=2, mode='eval'
 
     return input_fn
 
-def get_features(dataframe: pd.DataFrame, num_features: list, cat_features: list, labels_dict: dict) -> list:
+def get_features(data_train: pd.DataFrame, num_features: list, cat_features: list, labels_dict: dict) -> list:
     '''
     Return a list of tf feature columns
     :param num_features:
@@ -265,12 +265,11 @@ def get_features(dataframe: pd.DataFrame, num_features: list, cat_features: list
     :return: feature_columns
     '''
 
-    data_train = dataframe.copy()
     # Create an empty list for feature
     feature_columns = []
 
     # Get numerical features
-    normalize_parameters = _get_normalization_parameters(num_features)
+    normalize_parameters = _get_normalization_parameters(data_train, num_features)
     for col_name in num_features:
         mean = normalize_parameters[col_name]['mean']
         std = normalize_parameters[col_name]['std']
