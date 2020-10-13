@@ -31,7 +31,7 @@ from tensorflow.keras.losses import BinaryCrossentropy
 
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
-                    level=logging.INFO)
+                    level=logging.DEBUG)
 # Helpers --------------------------------------------------------------------------------------------------------------
 
 ## Preprocessing data
