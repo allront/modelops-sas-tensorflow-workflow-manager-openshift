@@ -88,7 +88,7 @@ def write_traindf (train_df: pd.DataFrame, datapath: str):
     train_df.to_csv(full_datapath, sep=',', index=False)
 
 
-# Build Load -----------------------------------------------------------------------------------------------------------
+# Build Process --------------------------------------------------------------------------------------------------------
 def build_transform (config):
     DATAMETA = config['data_meta']
     VARIABLE_META_DATA = config['variables_schema_meta']
@@ -109,7 +109,7 @@ def build_load (config):
 
     return load
 
-
+# Main -----------------------------------------------------------------------------------------------------------------
 def main ():
     # Read configuration ----------------------------------------
     logging.info('Loading configuration file...')
