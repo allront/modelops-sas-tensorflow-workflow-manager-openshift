@@ -32,6 +32,8 @@ from tensorflow.keras.losses import BinaryCrossentropy
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.DEBUG)
+
+
 # Helpers --------------------------------------------------------------------------------------------------------------
 
 def load_yaml (configpath: str) -> dict:
@@ -54,7 +56,8 @@ def read_data (datapath: str) -> pd.DataFrame:
     df = pd.read_csv(datapath, sep=',')
     return df
 
-def split_raw_train_test (raw_df: pd.DataFrame, test_size:float, random_state:int) -> tuple:
+
+def split_raw_train_test (raw_df: pd.DataFrame, test_size: float, random_state: int) -> tuple:
     '''
     Given raw data path and data directory, split the raw data
     in train and test
@@ -64,39 +67,40 @@ def split_raw_train_test (raw_df: pd.DataFrame, test_size:float, random_state:in
     train, test = train_test_split(raw_df, test_size=test_size, random_state=random_state)
     return train, test
 
+
 ## Preprocessing data
 
-def _set_categorical_type (dataframe: pd.DataFrame) -> pd.DataFrame:
+def _set_categorical_type (dataframe: pd.DataFrame, categorical_variables: list) -> pd.DataFrame:
     '''
     Set the categorical type as string if neeeded
     :param dataframe:
     :return: dataframe
     '''
-    for column in CATEGORICAL_VARIABLES:
+    for column in categorical_variables:
         if (dataframe[column].dtype == 'O'):
             dataframe[column] = dataframe[column].astype('string')
     return dataframe
 
 
-def _set_categorical_empty (dataframe: pd.DataFrame) -> pd.DataFrame:
+def _set_categorical_empty (dataframe: pd.DataFrame, categorical_variables: list) -> pd.DataFrame:
     '''
     Change object type for categorical variable to avoid TF issue
     :param dataframe:
     :return: dataframe
     '''
-    for column in CATEGORICAL_VARIABLES:
+    for column in categorical_variables:
         if any(dataframe[column].isna()):
             dataframe[column] = dataframe[column].fillna('')
     return dataframe
 
 
-def _set_numerical_type (dataframe: pd.DataFrame) -> pd.DataFrame:
+def _set_numerical_type (dataframe: pd.DataFrame, numerical_variables: list) -> pd.DataFrame:
     '''
     Set the numerical type as float64 if needed
     :param dataframe:
     :return: dataframe
     '''
-    for column in NUMERICAL_VARIABLES:
+    for column in numerical_variables:
         if (dataframe[column].dtype == 'int64'):
             dataframe[column] = dataframe[column].astype('float64')
     return dataframe
@@ -177,6 +181,7 @@ def _impute_missing_numerical (inputs: dict, target) -> dict:
         output[key] = tf.where(is_miss, tf_mean, inputs[key])
     return output, target
 
+
 def _get_std_parameter (dataframe: pd.DataFrame, column: str) -> float:
     '''
     Given a DataFrame column, calculate std
@@ -211,6 +216,7 @@ def normalizer (column, mean, std):
     :return:
     '''
     return (column - mean) / std
+
 
 ## Modelling
 
@@ -256,7 +262,8 @@ def get_dataset (dataframe: pd.DataFrame, target: str, num_epochs=2, mode='eval'
 
     return input_fn
 
-def get_features(data_train: pd.DataFrame, num_features: list, cat_features: list, labels_dict: dict) -> list:
+
+def get_features (data_train: pd.DataFrame, num_features: list, cat_features: list, labels_dict: dict) -> list:
     '''
     Return a list of tf feature columns
     :param num_features:
@@ -285,6 +292,7 @@ def get_features(data_train: pd.DataFrame, num_features: list, cat_features: lis
 
     return feature_columns
 
+
 def build_estimator (feature_columns, learning_rate, logs_dir: str):
     '''
     Given feature columns,
@@ -306,19 +314,22 @@ def build_estimator (feature_columns, learning_rate, logs_dir: str):
 
     return linear_classifier_base
 
+
 # Build Pipeline -------------------------------------------------------------------------------------------------------
-def build_ingest_data(config):
+def build_ingest_data (config):
     DATAMETA = config['data_meta']
     FULL_DATAPATH = os.path.join(DATAMETA['datapath_out'], DATAMETA['datafile'])
-    def ingest_data(test_size=0.1, random_state=8):
+
+    def ingest_data (test_size=0.1, random_state=8):
         raw_df = read_data(FULL_DATAPATH)
         data_train, data_test = split_raw_train_test(raw_df, test_size, random_state)
         return data_train, data_test
+
     return ingest_data
 
-def build_train_evaluate (config):
 
-    VARIABLE_SCHEMA_META=config['variables_schema_meta']
+def build_train_evaluate (config):
+    VARIABLE_SCHEMA_META = config['variables_schema_meta']
     TARGET = VARIABLE_SCHEMA_META['target']
     CATEGORICAL_VARIABLES = VARIABLE_SCHEMA_META['categorical_predictors']
     NUMERICAL_VARIABLES = VARIABLE_SCHEMA_META['numerical_predictors']
@@ -344,10 +355,10 @@ def build_train_evaluate (config):
 
     return train_evaluate
 
+
 # Main -----------------------------------------------------------------------------------------------------------
 
-def main():
-
+def main ():
     # Read configuration ----------------------------------------
     logging.info('Loading configuration file...')
     CONFIGPATH = './config.yaml'
