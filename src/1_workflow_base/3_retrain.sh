@@ -37,5 +37,5 @@
 
 echo "$(date '+%x %r') INFO Execute prebuild.py"
 export PYTHONPATH=${PYTHONPATH}:${PROJECT_DIR}/env/lib/python3.7/site-packages/
-sudo chmod +x ./0_transform_load/app/transform_load.py
-python transform_load.py
+sudo chmod +x ./retrain/0_transform_load/app/transform_load.py
+python ./retrain/0_transform_load/app/transform_load.py
