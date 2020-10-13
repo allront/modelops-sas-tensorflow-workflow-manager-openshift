@@ -33,7 +33,6 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.DEBUG)
 
-
 # Helpers --------------------------------------------------------------------------------------------------------------
 
 def load_yaml (configpath: str) -> dict:
@@ -70,37 +69,35 @@ def split_raw_train_test (raw_df: pd.DataFrame, test_size: float, random_state: 
 
 ## Preprocessing data
 
-def _set_categorical_type (dataframe: pd.DataFrame, categorical_variables: list) -> pd.DataFrame:
+def _set_categorical_type(dataframe: pd.DataFrame) -> pd.DataFrame:
     '''
     Set the categorical type as string if neeeded
     :param dataframe:
     :return: dataframe
     '''
-    for column in categorical_variables:
+    for column in CATEGORICAL_VARIABLES:
         if (dataframe[column].dtype == 'O'):
             dataframe[column] = dataframe[column].astype('string')
     return dataframe
 
-
-def _set_categorical_empty (dataframe: pd.DataFrame, categorical_variables: list) -> pd.DataFrame:
+def _set_categorical_empty(dataframe: pd.DataFrame) -> pd.DataFrame:
     '''
     Change object type for categorical variable to avoid TF issue
     :param dataframe:
     :return: dataframe
     '''
-    for column in categorical_variables:
+    for column in CATEGORICAL_VARIABLES:
         if any(dataframe[column].isna()):
             dataframe[column] = dataframe[column].fillna('')
     return dataframe
 
-
-def _set_numerical_type (dataframe: pd.DataFrame, numerical_variables: list) -> pd.DataFrame:
+def _set_numerical_type(dataframe: pd.DataFrame) -> pd.DataFrame:
     '''
     Set the numerical type as float64 if needed
     :param dataframe:
     :return: dataframe
     '''
-    for column in numerical_variables:
+    for column in NUMERICAL_VARIABLES:
         if (dataframe[column].dtype == 'int64'):
             dataframe[column] = dataframe[column].astype('float64')
     return dataframe
@@ -328,7 +325,9 @@ def build_ingest_data (config):
     return ingest_data
 
 
+
 def build_train_evaluate (config):
+    
     VARIABLE_SCHEMA_META = config['variables_schema_meta']
     TARGET = VARIABLE_SCHEMA_META['target']
     CATEGORICAL_VARIABLES = VARIABLE_SCHEMA_META['categorical_predictors']
@@ -336,6 +335,8 @@ def build_train_evaluate (config):
     LABELS_DICT = config['labels_dict']
     MODEL_META = config['model_meta']
     LOGS_DIR = config['logs_dir']
+
+
 
     def train_evaluate (data_train, data_test):
         # Get dataset
