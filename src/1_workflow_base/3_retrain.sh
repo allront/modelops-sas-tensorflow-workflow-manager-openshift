@@ -35,9 +35,19 @@ WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
 #docker container run --name ${CONTAINER_NAME} -v ${DATAPATH}:/transform_load/data ${TL_IMAGE_NAME}
 #echo ""
 
-echo "$(date '+%x %r') INFO Execute prebuild.py"
 cd ${WORKDIR}
 export PYTHONPATH=${PYTHONPATH}:${PROJECT_DIR}/env/lib/python3.7/site-packages/
+
+echo "$(date '+%x %r') INFO Execute transform_load.py"
 sudo chmod +x ./transform_load.py
 python transform_load.py
+
+echo "$(date '+%x %r') INFO Execute retrain.py"
+sudo chmod +x ./retrain.py
+python retrain.py
+
+echo "$(date '+%x %r') INFO Execute retrain.py"
+sudo chmod +x ./register.py
+python register.py
+
 

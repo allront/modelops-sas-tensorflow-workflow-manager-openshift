@@ -20,7 +20,7 @@ import yaml
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_curve, confusion_matrix
+from sklearn.metrics import confusion_matrix
 
 # Modelling
 import tensorflow as tf
@@ -164,6 +164,38 @@ def normalizer (column, mean, std):
     :return:
     '''
     return (column - mean) / std
+
+def calculate_correlation_matrix(labels, predictions, p=0.5):
+    '''
+    Given labels and predictions columns,
+    calculate confusion matrix for a given p
+    :param labels:
+    :param predictions:
+    :param p:
+    :return: corrmat
+    '''
+    corrmat = confusion_matrix(labels, predictions > p)
+    return corrmat
+
+def print_metrics(corrmat, metrics):
+    '''
+    Show evaluation matrix
+    :param corrmat:
+    :param metrics:
+    :return: None
+    '''
+    print('Correlation matrix info')
+    print('True Negatives - No default loans that pay', corrmat[0][0])
+    print('False Positives - No default loans that dont pay', corrmat[0][1])
+    print('False Negatives - Default loans that pay', corrmat[1][0])
+    print('True Positives: - Default loans that dont pay', corrmat[1][1])
+    print('Total Defauts: ', np.sum(corrmat[1]))
+    print()
+    print('-'*20)
+    print()
+    print('Evalutation Metrics')
+    for key, value in metrics.items():
+        print(key, ':', value)
 
 
 # Build Pipeline -------------------------------------------------------------------------------------------------------
@@ -364,12 +396,22 @@ def build_train_pipeline (config):
         shutil.rmtree(LOGS_DIR, ignore_errors=True)
         estimator_train = estimator.train(input_fn=train_input_fn)
         metrics = estimator_train.evaluate(input_fn=test_input_fn)
-        return estimator_train, metrics
+        return estimator_train, metrics, test_input_fn, data_test
 
     return train_pipeline
 
-def build_evaluate():
-    pass
+def build_evaluator(config):
+
+    VARIABLES_SCHEMA_META = config['variables_schema_meta']
+    TARGET = VARIABLES_SCHEMA_META['target']
+
+    def evaluator(model, metrics, test_input_fn, data_test):
+        predictions_dictionary = list(model.predict(test_input_fn))
+        predictions = pd.Series([pred['class_ids'] for pred in predictions_dictionary])
+        print_metrics(calculate_correlation_matrix(data_test[TARGET], predictions), metrics)
+
+    return evaluator
+
 
 # Main -----------------------------------------------------------------------------------------------------------
 
@@ -382,11 +424,15 @@ def main ():
     # Build pipeline --------------------------------------------
     logging.info('Compiling pipeline...')
     train_pipeline = build_train_pipeline(CONFIG)
+    evaluator = build_evaluator(CONFIG)
 
     # Training pipeline -----------------------------------------
     logging.info('Training pipeline...')
-    model, metrics = train_pipeline()
+    model, metrics, test_input_fn, data_test = train_pipeline()
 
+    # Evaluate Training -----------------------------------------
+    logging.info('Priting Test Evaluation metrics')
+    evaluator(model, metrics, test_input_fn, data_test)
 
 if __name__ == "__main__":
     main()
