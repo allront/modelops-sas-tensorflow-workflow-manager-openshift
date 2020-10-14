@@ -315,8 +315,49 @@ def build_features (config, _get_normalization_parameters):
     return get_features
 
 
+BATCH_LAYER = 29
+
+
+def build_estimator (config, feature_columns):
+
+    MODEL_META = config['model_meta']
+    TF_SEED = MODEL_META['tf_random_seed']
+    LOGS_DIR = MODEL_META['logs_dir']
+    N_CLASSES = MODEL_META['n_classes']
+    BATCH_LAYER = MODEL_META['batch_layer']
+    LEARNING_RATE = MODEL_META['lr']
+
+    def get_estimator():
+        runconfig = tf.estimator.RunConfig(tf_random_seed=TF_SEED)
+        boosted_trees_classifier = tf.estimator.BoostedTreesClassifier(
+            model_dir=LOGS_DIR,
+            feature_columns=feature_columns,
+            n_classes=N_CLASSES,
+            n_batches_per_layer=BATCH_LAYER,
+            learning_rate=LEARNING_RATE
+        )
+
+        return boosted_trees_classifier
+
+    return get_estimator
+
+
 def build_pipeline (config):
-    pass
+    logging.info('Prepare data for training...')
+    ingest_data = build_ingest_data(config)
+    data_train, data_test = ingest_data()
+
+    logging.info('Build imputers...')
+    _impute_missing_categorical, _impute_missing_numerical, _get_normalization_parameters = build_imputers(config,
+                                                                                                           data_train)
+    logging.info('Build input_fn...')
+    train_input_fn = build_input_df(config, data_train, _impute_missing_categorical, _impute_missing_numerical, 'train')
+    test_input_fn = build_input_df(config, data_train, _impute_missing_categorical, _impute_missing_numerical)
+
+    logging.info('Build features...')
+    get_features = build_features(config, _get_normalization_parameters)
+    features = get_features()
+
 
 
 # Main -----------------------------------------------------------------------------------------------------------
@@ -329,7 +370,6 @@ def main ():
 
     # Build methods and run the process -------------------------
     logging.info('Training pipeline starts...')
-
     logging.info('Prepare data for training...')
     ingest_data = build_ingest_data(CONFIG)
     data_train, data_test = ingest_data()
@@ -344,7 +384,11 @@ def main ():
     logging.info('Build features...')
     get_features = build_features(CONFIG, _get_normalization_parameters)
     features = get_features()
-    print(features)
+
+    logging.info('Build estimator')
+    get_estimator = build_estimator(CONFIG, features)
+    estimator = get_estimator()
+    estimator.train(input_fn=train_input_fn)
 
 if __name__ == "__main__":
     main()
