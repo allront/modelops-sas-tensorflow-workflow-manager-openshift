@@ -9,7 +9,7 @@ Steps:
 
 # General
 import os
-#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # set before import tf
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # set before import tf
 import functools
 import shutil
 import datetime
@@ -165,7 +165,8 @@ def normalizer (column, mean, std):
     '''
     return (column - mean) / std
 
-def calculate_correlation_matrix(labels, predictions, p=0.5):
+
+def calculate_correlation_matrix (labels, predictions, p=0.5):
     '''
     Given labels and predictions columns,
     calculate confusion matrix for a given p
@@ -177,7 +178,8 @@ def calculate_correlation_matrix(labels, predictions, p=0.5):
     corrmat = confusion_matrix(labels, predictions > p)
     return corrmat
 
-def print_metrics(corrmat, metrics):
+
+def print_metrics (corrmat, metrics):
     '''
     Show evaluation matrix
     :param corrmat:
@@ -191,7 +193,7 @@ def print_metrics(corrmat, metrics):
     print('True Positives: - Default loans that dont pay', corrmat[1][1])
     print('Total Defauts: ', np.sum(corrmat[1]))
     print()
-    print('-'*20)
+    print('-' * 20)
     print()
     print('Evalutation Metrics')
     for key, value in metrics.items():
@@ -345,8 +347,8 @@ def build_features (config, _get_normalization_parameters):
 
     return get_features
 
-def build_estimator (config, feature_columns):
 
+def build_estimator (config, feature_columns):
     MODEL_META = config['model_meta']
     TF_SEED = MODEL_META['tf_random_seed']
     LOGS_DIR = MODEL_META['logs_dir']
@@ -354,7 +356,7 @@ def build_estimator (config, feature_columns):
     BATCH_LAYER = MODEL_META['batch_layer']
     LEARNING_RATE = MODEL_META['lr']
 
-    def get_estimator():
+    def get_estimator ():
         runconfig = tf.estimator.RunConfig(tf_random_seed=TF_SEED)
         boosted_trees_classifier = tf.estimator.BoostedTreesClassifier(
             model_dir=LOGS_DIR,
@@ -368,20 +370,22 @@ def build_estimator (config, feature_columns):
 
     return get_estimator
 
-def build_train_pipeline (config):
 
+def build_train_pipeline (config):
     MODEL_META = config['model_meta']
     LOGS_DIR = MODEL_META['logs_dir']
 
-    def train_pipeline():
+    def train_pipeline ():
         logging.info('Prepare data for training...')
         ingest_data = build_ingest_data(config)
         data_train, data_test = ingest_data()
+        print(data_train, data_test)
 
         logging.info('Define input_fn for training...')
         _impute_missing_categorical, _impute_missing_numerical, _get_normalization_parameters = build_imputers(config,
                                                                                                                data_train)
-        train_input_fn = build_input_df(config, data_train, _impute_missing_categorical, _impute_missing_numerical, 'train')
+        train_input_fn = build_input_df(config, data_train, _impute_missing_categorical, _impute_missing_numerical,
+                                        'train')
         test_input_fn = build_input_df(config, data_train, _impute_missing_categorical, _impute_missing_numerical)
 
         logging.info('Prepare features...')
@@ -400,12 +404,12 @@ def build_train_pipeline (config):
 
     return train_pipeline
 
-def build_evaluator(config):
 
+def build_evaluator (config):
     VARIABLES_SCHEMA_META = config['variables_schema_meta']
     TARGET = VARIABLES_SCHEMA_META['target']
 
-    def evaluator(model, metrics, test_input_fn, data_test):
+    def evaluator (model, metrics, test_input_fn, data_test):
         predictions_dictionary = list(model.predict(test_input_fn))
         predictions = pd.Series([pred['class_ids'] for pred in predictions_dictionary])
         print_metrics(calculate_correlation_matrix(data_test[TARGET], predictions), metrics)
@@ -433,6 +437,7 @@ def main ():
     # Evaluate Training -----------------------------------------
     logging.info('Priting Test Evaluation metrics')
     evaluator(model, metrics, test_input_fn, data_test)
+
 
 if __name__ == "__main__":
     main()
