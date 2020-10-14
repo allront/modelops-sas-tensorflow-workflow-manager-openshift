@@ -193,7 +193,7 @@ def build_imputers(config, data_train):
 
     return _impute_missing_categorical, _impute_missing_numerical
 
-def build_input_df(config, dataframe, _impute_missing_categorical, _impute_missing_numerical, mode):
+def build_input_df(config, dataframe, _impute_missing_categorical, _impute_missing_numerical, mode='eval'):
 
     VARIABLES_SCHEMA_META = config['variables_schema_meta']
     CATEGORICAL_VARIABLES = VARIABLES_SCHEMA_META['categorical_predictors']
