@@ -31,7 +31,7 @@ from tensorflow.keras.losses import BinaryCrossentropy
 
 # Settings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL
-logging.getLogger('tensorflow').setLevel(logging.FATAL)
+tf.logging.set_verbosity(tf.logging.FATAL)
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.DEBUG)
