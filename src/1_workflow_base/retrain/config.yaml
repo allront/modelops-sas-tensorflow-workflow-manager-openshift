@@ -1,6 +1,6 @@
 data_meta:
-    datapath_in: '${PROJECT_DIR}/data/val'
-    datapath_out: '${PROJECT_DIR}/data/retrain'
+    datapath_in: ${PROJECT_DIR}/data/val
+    datapath_out: ${PROJECT_DIR}/data/retrain
     datafile: 'retrain.csv'
     test_size: 0.1
     random_state: 8
@@ -53,7 +53,7 @@ labels_dict:
         - Missing
 model_meta:
     tf_random_seed: 8
-    logs_dir: '${PROJECT_DIR}/logs/tf_logs'
+    logs_dir: ${PROJECT_DIR}/logs/tf_logs
     n_classes: 2
     batch_layer: 29
     lr: 0.1
