@@ -45,8 +45,8 @@ sudo chmod +x ./transform_load.py
 python3 transform_load.py
 
 echo "$(date '+%x %r') INFO Execute retrain.py"
-sudo chmod +x ./retrain.py
-python3 retrain.py
+sudo chmod +x ./train.py
+python3 train.py
 
 #echo "$(date '+%x %r') INFO Execute retrain.py"
 #sudo chmod +x ./register.py
