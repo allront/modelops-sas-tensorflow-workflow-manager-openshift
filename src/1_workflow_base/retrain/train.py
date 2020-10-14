@@ -30,12 +30,11 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import BinaryCrossentropy
 
 # Settings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL
+logging.getLogger('tensorflow').setLevel(logging.FATAL)
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.DEBUG)
-tf.logging.set_verbosity(tf.logging.ERROR)
-
-
 # Helpers --------------------------------------------------------------------------------------------------------------
 
 def load_yaml (configpath: str) -> dict:
