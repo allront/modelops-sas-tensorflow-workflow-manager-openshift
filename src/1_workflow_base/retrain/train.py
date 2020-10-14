@@ -379,7 +379,7 @@ def build_train_pipeline (config):
         logging.info('Prepare data for training...')
         ingest_data = build_ingest_data(config)
         data_train, data_test = ingest_data()
-        print(data_train, data_test)
+        print(len(data_train), len(data_test))
 
         logging.info('Define input_fn for training...')
         _impute_missing_categorical, _impute_missing_numerical, _get_normalization_parameters = build_imputers(config,
