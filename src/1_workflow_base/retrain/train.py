@@ -29,9 +29,11 @@ from tensorflow.keras.layers import Dense, DenseFeatures, Dropout
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import BinaryCrossentropy
 
+# Settings
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.DEBUG)
+tf.logging.set_verbosity(tf.logging.ERROR)
 
 
 # Helpers --------------------------------------------------------------------------------------------------------------
