@@ -9,6 +9,7 @@ Steps:
 
 # General
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import functools
 import shutil
 import datetime
@@ -30,8 +31,6 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import BinaryCrossentropy
 
 # Settings
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
-tf.get_logger().setLevel('ERROR')
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.DEBUG)
