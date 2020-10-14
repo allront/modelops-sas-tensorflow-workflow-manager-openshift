@@ -93,12 +93,11 @@ def build_transform (config):
     VARIABLE_META_DATA = config['variables_schema_meta']
 
     def transform ():
-        datalist = get_data_list(DATAMETA['datapath_in'])
+        datalist = get_data_list(os.path.join(DATAMETA['datapath_in']))
         train_df = create_training_dataframe(datalist, VARIABLE_META_DATA['labels'])
         return train_df
 
     return transform
-
 
 def build_load (config):
     DATAMETA = config['data_meta']
