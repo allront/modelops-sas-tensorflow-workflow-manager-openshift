@@ -284,7 +284,7 @@ def build_features (config, _get_normalization_parameters):
     CATEGORICAL_VARIABLES = VARIABLES_SCHEMA_META['categorical_predictors']
     LABELS_DIC = config['labels_dict']
 
-    def features ():
+    def get_features ():
         '''
         Return a list of tf feature columns
         :param num_features:
@@ -312,7 +312,7 @@ def build_features (config, _get_normalization_parameters):
 
         return feature_columns
 
-    return features
+    return get_features
 
 
 def build_pipeline (config):
@@ -342,7 +342,8 @@ def main ():
     test_input_fn = build_input_df(CONFIG, data_train, _impute_missing_categorical, _impute_missing_numerical)
 
     logging.info('Build features...')
-    features = build_features(CONFIG, _get_normalization_parameters)
+    get_features = build_features(CONFIG, _get_normalization_parameters)
+    features = get_features()
     print(features)
 
 if __name__ == "__main__":
