@@ -9,8 +9,7 @@ Steps:
 
 # General
 import os
-
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # set before import tf
+#os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # set before import tf
 import functools
 import shutil
 import datetime
@@ -314,10 +313,6 @@ def build_features (config, _get_normalization_parameters):
 
     return get_features
 
-
-BATCH_LAYER = 29
-
-
 def build_estimator (config, feature_columns):
 
     MODEL_META = config['model_meta']
@@ -341,24 +336,40 @@ def build_estimator (config, feature_columns):
 
     return get_estimator
 
+def build_train_pipeline (config):
 
-def build_pipeline (config):
-    logging.info('Prepare data for training...')
-    ingest_data = build_ingest_data(config)
-    data_train, data_test = ingest_data()
+    MODEL_META = config['model_meta']
+    LOGS_DIR = MODEL_META['logs_dir']
 
-    logging.info('Build imputers...')
-    _impute_missing_categorical, _impute_missing_numerical, _get_normalization_parameters = build_imputers(config,
-                                                                                                           data_train)
-    logging.info('Build input_fn...')
-    train_input_fn = build_input_df(config, data_train, _impute_missing_categorical, _impute_missing_numerical, 'train')
-    test_input_fn = build_input_df(config, data_train, _impute_missing_categorical, _impute_missing_numerical)
+    def train_pipeline():
+        logging.info('Prepare data for training...')
+        ingest_data = build_ingest_data(config)
+        data_train, data_test = ingest_data()
 
-    logging.info('Build features...')
-    get_features = build_features(config, _get_normalization_parameters)
-    features = get_features()
+        logging.info('Define input_fn for training...')
+        _impute_missing_categorical, _impute_missing_numerical, _get_normalization_parameters = build_imputers(config,
+                                                                                                               data_train)
+        train_input_fn = build_input_df(config, data_train, _impute_missing_categorical, _impute_missing_numerical, 'train')
+        test_input_fn = build_input_df(config, data_train, _impute_missing_categorical, _impute_missing_numerical)
 
+        logging.info('Prepare features...')
+        get_features = build_features(config, _get_normalization_parameters)
+        features = get_features()
 
+        logging.info('Build estimator...')
+        get_estimator = build_estimator(config, features)
+        estimator = get_estimator()
+
+        logging.info('Start training...')
+        shutil.rmtree(LOGS_DIR, ignore_errors=True)
+        estimator_train = estimator.train(input_fn=train_input_fn)
+        metrics = estimator_train.evaluate(input_fn=test_input_fn)
+        return estimator_train, metrics
+
+    return train_pipeline
+
+def build_evaluate():
+    pass
 
 # Main -----------------------------------------------------------------------------------------------------------
 
@@ -368,27 +379,14 @@ def main ():
     CONFIGPATH = './config.yaml'
     CONFIG = load_yaml(CONFIGPATH)
 
-    # Build methods and run the process -------------------------
-    logging.info('Training pipeline starts...')
-    logging.info('Prepare data for training...')
-    ingest_data = build_ingest_data(CONFIG)
-    data_train, data_test = ingest_data()
+    # Build pipeline --------------------------------------------
+    logging.info('Compiling pipeline...')
+    train_pipeline = build_train_pipeline(CONFIG)
 
-    logging.info('Build imputers...')
-    _impute_missing_categorical, _impute_missing_numerical, _get_normalization_parameters = build_imputers(CONFIG,
-                                                                                                           data_train)
-    logging.info('Build input_fn...')
-    train_input_fn = build_input_df(CONFIG, data_train, _impute_missing_categorical, _impute_missing_numerical, 'train')
-    test_input_fn = build_input_df(CONFIG, data_train, _impute_missing_categorical, _impute_missing_numerical)
+    # Training pipeline -----------------------------------------
+    logging.info('Training pipeline...')
+    model, metrics = train_pipeline()
 
-    logging.info('Build features...')
-    get_features = build_features(CONFIG, _get_normalization_parameters)
-    features = get_features()
-
-    logging.info('Build estimator')
-    get_estimator = build_estimator(CONFIG, features)
-    estimator = get_estimator()
-    estimator.train(input_fn=train_input_fn)
 
 if __name__ == "__main__":
     main()

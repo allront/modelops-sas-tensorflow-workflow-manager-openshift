@@ -51,7 +51,7 @@ labels_dict:
         - Missing
 model_meta:
     tf_random_seed: 8
-    logs_dir: '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs'
+    logs_dir: '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs/tf_logs'
     n_classes: 2
     batch_layer: 29
     lr: 0.1
