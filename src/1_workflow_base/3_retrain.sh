@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 3_retrain.sh
 # 3_retrain.sh executes the retraining pipeline in docker images
 #
@@ -10,6 +11,7 @@
 
 # Variables
 WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
+VENV=${PROJECT_DIR}/env/bin/activate
 #
 ## TRANSFORM_LOAD variables
 #TRANSFORM_LOAD_PATH=${WORKDIR}/0_transform_load/
@@ -36,18 +38,18 @@ WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
 #echo ""
 
 cd ${WORKDIR}
-export PYTHONPATH=${PYTHONPATH}:${PROJECT_DIR}/env/lib/python3.7/site-packages/
+source ${VENV}
 
 echo "$(date '+%x %r') INFO Execute transform_load.py"
 sudo chmod +x ./transform_load.py
-python transform_load.py
+python3 transform_load.py
 
 echo "$(date '+%x %r') INFO Execute retrain.py"
 sudo chmod +x ./retrain.py
-python retrain.py
+python3 retrain.py
 
-echo "$(date '+%x %r') INFO Execute retrain.py"
-sudo chmod +x ./register.py
-python register.py
+#echo "$(date '+%x %r') INFO Execute retrain.py"
+#sudo chmod +x ./register.py
+#python3 register.py
 
 

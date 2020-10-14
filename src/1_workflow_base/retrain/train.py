@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 """
@@ -204,10 +203,12 @@ def print_metrics (corrmat, metrics):
 def build_ingest_data (config):
     DATAMETA = config['data_meta']
     FULL_DATAPATH = os.path.join(DATAMETA['datapath_out'], DATAMETA['datafile'])
+    TEST_SIZE = DATAMETA['test_size']
+    RANDOM_STATE = DATAMETA['random_state']
 
-    def ingest_data (test_size=0.1, random_state=8):
+    def ingest_data ():
         raw_df = read_data(FULL_DATAPATH)
-        data_train, data_test = split_raw_train_test(raw_df, test_size, random_state)
+        data_train, data_test = split_raw_train_test(raw_df, TEST_SIZE, RANDOM_STATE)
         return data_train, data_test
 
     return ingest_data
@@ -372,6 +373,7 @@ def build_estimator (config, feature_columns):
 
 
 def build_train_pipeline (config):
+
     MODEL_META = config['model_meta']
     LOGS_DIR = MODEL_META['logs_dir']
 
