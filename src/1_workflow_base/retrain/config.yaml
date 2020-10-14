@@ -32,6 +32,10 @@ variables_schema_meta:
     categorical_predictors:
         - REASON
         - JOB
+input_meta:
+    mode: eval
+    num_epochs: 2
+    batch_size : 10
 labels_dict:
     REASON:
         - DebtCon
