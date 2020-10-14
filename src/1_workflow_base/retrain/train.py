@@ -9,7 +9,8 @@ Steps:
 
 # General
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # set before import tf
 import functools
 import shutil
 import datetime
@@ -34,6 +35,8 @@ from tensorflow.keras.losses import BinaryCrossentropy
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s',
                     datefmt='%m/%d/%Y %I:%M:%S %p',
                     level=logging.DEBUG)
+
+
 # Helpers --------------------------------------------------------------------------------------------------------------
 
 def load_yaml (configpath: str) -> dict:
@@ -67,19 +70,20 @@ def split_raw_train_test (raw_df: pd.DataFrame, test_size: float, random_state: 
     train, test = train_test_split(raw_df, test_size=test_size, random_state=random_state)
     return train, test
 
-def _set_categorical_type (dataframe: pd.DataFrame, categoricals:list) -> pd.DataFrame:
-        '''
-        Set the categorical type as string if neeeded
-        :param dataframe:
-        :return: dataframe
-        '''
-        for column in categoricals:
-            if (dataframe[column].dtype == 'O'):
-                dataframe[column] = dataframe[column].astype('string')
-        return dataframe
+
+def _set_categorical_type (dataframe: pd.DataFrame, categoricals: list) -> pd.DataFrame:
+    '''
+    Set the categorical type as string if neeeded
+    :param dataframe:
+    :return: dataframe
+    '''
+    for column in categoricals:
+        if (dataframe[column].dtype == 'O'):
+            dataframe[column] = dataframe[column].astype('string')
+    return dataframe
 
 
-def _set_categorical_empty (dataframe: pd.DataFrame, categoricals:list) -> pd.DataFrame:
+def _set_categorical_empty (dataframe: pd.DataFrame, categoricals: list) -> pd.DataFrame:
     '''
     Change object type for categorical variable to avoid TF issue
     :param dataframe:
@@ -90,7 +94,8 @@ def _set_categorical_empty (dataframe: pd.DataFrame, categoricals:list) -> pd.Da
             dataframe[column] = dataframe[column].fillna('')
     return dataframe
 
-def _set_numerical_type (dataframe: pd.DataFrame, numericals:list) -> pd.DataFrame:
+
+def _set_numerical_type (dataframe: pd.DataFrame, numericals: list) -> pd.DataFrame:
     '''
     Set the numerical type as float64 if needed
     :param dataframe:
@@ -101,7 +106,8 @@ def _set_numerical_type (dataframe: pd.DataFrame, numericals:list) -> pd.DataFra
             dataframe[column] = dataframe[column].astype('float64')
     return dataframe
 
-def _get_impute_parameters_cat(categorical_variables: list) -> dict:
+
+def _get_impute_parameters_cat (categorical_variables: list) -> dict:
     '''
     For each column in the categorical features, assign default value for missings.
     :param categorical_variables:
@@ -113,7 +119,8 @@ def _get_impute_parameters_cat(categorical_variables: list) -> dict:
         impute_parameters[column] = 'Missing'
     return impute_parameters
 
-def _get_mean_parameter(dataframe: pd.DataFrame, column: str) -> float:
+
+def _get_mean_parameter (dataframe: pd.DataFrame, column: str) -> float:
     '''
     Given a DataFrame column, calculate mean
     :param dataframe:
@@ -123,7 +130,8 @@ def _get_mean_parameter(dataframe: pd.DataFrame, column: str) -> float:
     mean = dataframe[column].mean()
     return mean
 
-def _get_impute_parameters_num(dataframe: pd.DataFrame, numerical_variables: list) -> dict:
+
+def _get_impute_parameters_num (dataframe: pd.DataFrame, numerical_variables: list) -> dict:
     '''
     Given a DataFrame and its numerical variables, return the associated dictionary of means
     :param dataframe:
@@ -135,6 +143,28 @@ def _get_impute_parameters_num(dataframe: pd.DataFrame, numerical_variables: lis
     for column in numerical_variables:
         impute_parameters[column] = _get_mean_parameter(dataframe, column)
     return impute_parameters
+
+
+def _get_std_parameter (dataframe: pd.DataFrame, column: str) -> float:
+    '''
+    Given a DataFrame column, calculate std
+    :param dataframe:
+    :param column:
+    :return: std
+    '''
+    std = dataframe[column].std()
+    return std
+
+
+def normalizer (column, mean, std):
+    '''
+    Given a column, Normalize with calculated mean and std
+    :param column:
+    :param mean:
+    :param std:
+    :return:
+    '''
+    return (column - mean) / std
 
 
 # Build Pipeline -------------------------------------------------------------------------------------------------------
@@ -149,8 +179,8 @@ def build_ingest_data (config):
 
     return ingest_data
 
-def build_imputers(config, data_train):
 
+def build_imputers (config, data_train):
     VARIABLES_SCHEMA_META = config['variables_schema_meta']
     CATEGORICAL_VARIABLES = VARIABLES_SCHEMA_META['categorical_predictors']
     NUMERICAL_VARIABLES = VARIABLES_SCHEMA_META['numerical_predictors']
@@ -191,17 +221,29 @@ def build_imputers(config, data_train):
             output[key] = tf.where(is_miss, tf_mean, inputs[key])
         return output, target
 
-    return _impute_missing_categorical, _impute_missing_numerical
+    def _get_normalization_parameters (numerical_variables: list) -> dict:
+        '''
+        For each numerical variable, calculate mean and std based on training dataframe
+        :param numerical_variables:
+        :return: normalize_parameters
+        '''
+        normalize_parameters = {}
+        for column in numerical_variables:
+            normalize_parameters[column] = {}
+            normalize_parameters[column]['mean'] = _get_mean_parameter(data_train, column)
+            normalize_parameters[column]['std'] = _get_std_parameter(data_train, column)
+        return normalize_parameters
 
-def build_input_df(config, dataframe, _impute_missing_categorical, _impute_missing_numerical, mode='eval'):
+    return _impute_missing_categorical, _impute_missing_numerical, _get_normalization_parameters
 
+
+def build_input_df (config, dataframe, _impute_missing_categorical, _impute_missing_numerical, mode='eval'):
     VARIABLES_SCHEMA_META = config['variables_schema_meta']
     CATEGORICAL_VARIABLES = VARIABLES_SCHEMA_META['categorical_predictors']
     NUMERICAL_VARIABLES = VARIABLES_SCHEMA_META['numerical_predictors']
     TARGET = VARIABLES_SCHEMA_META['target']
     EPOCHS = config['input_meta']['num_epochs']
     BATCH_SIZE = config['input_meta']['batch_size']
-
 
     def input_fn ():
         '''
@@ -234,7 +276,46 @@ def build_input_df(config, dataframe, _impute_missing_categorical, _impute_missi
 
     return input_fn
 
-def build_pipeline(config):
+
+def build_features (config, _get_normalization_parameters):
+    VARIABLES_SCHEMA_META = config['variables_schema_meta']
+    NUMERICAL_VARIABLES = VARIABLES_SCHEMA_META['numerical_predictors']
+    VARIABLES_SCHEMA_META = config['variables_schema_meta']
+    CATEGORICAL_VARIABLES = VARIABLES_SCHEMA_META['categorical_predictors']
+    LABELS_DIC = config['labels_dict']
+
+    def features ():
+        '''
+        Return a list of tf feature columns
+        :param num_features:
+        :param cat_features:
+        :param labels_dict:
+        :return: feature_columns
+        '''
+        # Create an empty list for feature
+        feature_columns = []
+
+        # Get numerical features
+        normalize_parameters = _get_normalization_parameters(NUMERICAL_VARIABLES)
+        for col_name in NUMERICAL_VARIABLES:
+            mean = normalize_parameters[col_name]['mean']
+            std = normalize_parameters[col_name]['std']
+            normalizer_fn = functools.partial(normalizer, mean=mean, std=std)
+            num_feature = tf.feature_column.numeric_column(col_name, dtype=tf.float32, normalizer_fn=normalizer_fn)
+            feature_columns.append(num_feature)
+
+        # Get categorical features
+        for col_name in CATEGORICAL_VARIABLES:
+            cat_feature = tf.feature_column.categorical_column_with_vocabulary_list(col_name, LABELS_DIC[col_name])
+            indicator_column = tf.feature_column.indicator_column(cat_feature)
+            feature_columns.append(indicator_column)
+
+        return feature_columns
+
+    return features
+
+
+def build_pipeline (config):
     pass
 
 
@@ -254,15 +335,15 @@ def main ():
     data_train, data_test = ingest_data()
 
     logging.info('Build imputers...')
-    _impute_missing_categorical, _impute_missing_numerical = build_imputers(CONFIG, data_train)
+    _impute_missing_categorical, _impute_missing_numerical, _get_normalization_parameters = build_imputers(CONFIG,
+                                                                                                           data_train)
     logging.info('Build input_fn...')
     train_input_fn = build_input_df(CONFIG, data_train, _impute_missing_categorical, _impute_missing_numerical, 'train')
     test_input_fn = build_input_df(CONFIG, data_train, _impute_missing_categorical, _impute_missing_numerical)
 
-    for feature_batch, label_batch in train_input_fn().take(1):
-        print('Feature keys:', list(feature_batch.keys()))
-        print('A batch of REASON:', feature_batch['REASON'].numpy())
-        print('A batch of Labels:', label_batch.numpy())
+    logging.info('Build features...')
+    features = build_features(CONFIG, _get_normalization_parameters)
+    print(features)
 
 if __name__ == "__main__":
     main()
