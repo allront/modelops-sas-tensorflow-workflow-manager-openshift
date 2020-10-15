@@ -60,11 +60,22 @@ model_meta:
     modelpath_out: ./models
     model_version: 2
     champion_path: ./models/champion
-connection:
-    server: http://172.28.106.218
-    username: russasdemo
-    password: Orion123
-modelrepository_meta:
-    project_name: sas_modelops_tensorflow_openshift
+model_registration:
+    model_metadata:
+        outvar_names:
+            - P_BAD0
+            - P_BAD1
+            - EM_CLASSIFICATION
+            - EM_EVENTPROBABILITY
+        labels:
+            - 0
+            - 1
+        eventprob: 0.5
+    connection:
+        server: http://172.28.106.218
+        username: russasdemo
+        password: Orion123
+    modelrepository_meta:
+        project_name: sas_modelops_tensorflow_openshift
 
 

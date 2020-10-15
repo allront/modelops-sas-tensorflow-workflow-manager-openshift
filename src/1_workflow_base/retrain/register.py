@@ -45,6 +45,15 @@ def load_yaml (filepath):
         conn_dict = yaml.load(file, Loader=yaml.FullLoader)
     return conn_dict
 
+def read_data_nrows (datapath: str, nrows) -> pd.DataFrame:
+    '''
+    Read csv for creating a nrows Dataframe
+    :param datapath:
+    :return: data
+    '''
+    df = pd.read_csv(datapath, sep=',', nrows)
+    return df
+
 
 def write_requirements (folder, filename):
     '''
@@ -64,12 +73,22 @@ def write_requirements (folder, filename):
 
 # Build Pipeline -------------------------------------------------------------------------------------------------------
 def build_write_metadata(config):
+
+    VARIABLES_SCHEMA_META = config['variables_schema_meta']
+    TARGET = VARIABLES_SCHEMA_META['target']
+    CATEGORICAL_VARIABLES = VARIABLES_SCHEMA_META['categorical_predictors']
+    NUMERICAL_VARIABLES = VARIABLES_SCHEMA_META['numerical_predictors']
+    PREDICTORS = CATEGORICAL_VARIABLES + NUMERICAL_VARIABLES
+    DATAMETA = config['data_meta']
     MODEL_META = config['model_meta']
     CHAMPION_PATH = MODEL_META['champion_path']
 
     def write_metadata():
         write_requirements(CHAMPION_PATH, 'requirements.txt')
-
+        data_train = read_data_nrows(DATAMETA['datapath_out'], 10)
+        JSONFiles = pzmm.JSONFiles()
+        # write input.json
+        JSONFiles.writeVarJSON(data_train[PREDICTORS], isInput=True, jPath=CHAMPION_PATH)
     return write_metadata
 # Main -----------------------------------------------------------------------------------------------------------
 
