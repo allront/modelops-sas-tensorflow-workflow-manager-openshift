@@ -83,3 +83,6 @@ def main ():
     logging.info('Writing Metadata associated to the model...')
     write_metadata = build_write_metadata(CONFIG)
     write_metadata()
+
+if __name__ == "__main__":
+    main()
