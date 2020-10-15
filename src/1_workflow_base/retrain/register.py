@@ -111,6 +111,30 @@ def zip_folder (folder_to_zip_path, rmtree=False):
     return zipath
 
 
+def run_model_tracking (server, user, password, zipath, projectname, modelname):
+    '''
+       Given server and project params,
+    create a project and register the model in SAS Model manager
+    :param server:
+    :param user:
+    :param password:
+    :param project:
+    :param model:
+    :return: None
+    '''
+
+    with Session(hostname=server, username=user, password=password, verify_ssl=False):
+        project = model_repository.get_project(projectname)
+
+        zipfile = open(zipath, 'rb')
+
+        model_repository.import_model_from_zip(modelname,
+                                               project,
+                                               file=zipfile
+                                               )
+        zipfile.close()
+
+
 # Build Pipeline -------------------------------------------------------------------------------------------------------
 def build_write_metadata (config):
     VARIABLES_SCHEMA_META = config['variables_schema_meta']
@@ -146,7 +170,7 @@ def build_write_metadata (config):
                                            modeler='ivnard')
         # Zip TF variables
         TF_SAVEDMODEL_NAME = \
-        [file for file in os.listdir(CHAMPION_PATH) if os.path.isdir(os.path.join(CHAMPION_PATH, file))][0]
+            [file for file in os.listdir(CHAMPION_PATH) if os.path.isdir(os.path.join(CHAMPION_PATH, file))][0]
         TF_SAVEDMODEL_PATH = os.path.join(CHAMPION_PATH, TF_SAVEDMODEL_NAME)
         # Zip TF SavedModel format
         ZIP_TF_SAVEDMODEL_PATH = zip_folder(TF_SAVEDMODEL_PATH, rmtree=True)
@@ -157,6 +181,19 @@ def build_write_metadata (config):
     return write_metadata
 
 
+def build_run_model_tracking (config, zip_champion_path):
+    MODEL_REG = config['model_registration']['registration']
+
+    run_model_tracking(MODEL_REG['server'],
+                       MODEL_REG['username'],
+                       MODEL_REG['password'],
+                       zip_champion_path,
+                       MODEL_REG['projectname'],
+                       MODEL_REG['modelname'])
+
+    return run_model_tracking
+
+
 # Main -----------------------------------------------------------------------------------------------------------
 
 def main ():
@@ -165,11 +202,16 @@ def main ():
     CONFIGPATH = './config.yaml'
     CONFIG = load_yaml(CONFIGPATH)
 
-    # Build pipeline --------------------------------------------
+    # Run Registration Process --------------------------------------------
     logging.info('Writing Metadata associated to the model...')
     write_metadata = build_write_metadata(CONFIG)
     zip_tf_savedmodel, zip_chmp_folder = write_metadata()
-    logging.info(f'Tf model zipped in {zip_tf_savedmodel} and Model folder for SAS Model Manager zipped in {zip_chmp_folder}')
+    logging.info(
+        f'Tf model zipped in {zip_tf_savedmodel} and Model folder for SAS Model Manager zipped in {zip_chmp_folder}')
+    logging.info('Registering the model...')
+    run_model_tracking = build_run_model_tracking(CONFIG, zip_chmp_folder)
+    run_model_tracking()
+    logging.info('Registration completed!')
 
 if __name__ == "__main__":
     main()
