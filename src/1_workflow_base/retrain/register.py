@@ -51,7 +51,7 @@ def read_data_nrows (datapath: str, nrows) -> pd.DataFrame:
     :param datapath:
     :return: data
     '''
-    df = pd.read_csv(datapath, sep=',', nrows)
+    df = pd.read_csv(datapath, sep=',',nrows=nrows)
     return df
 
 
@@ -85,7 +85,7 @@ def build_write_metadata(config):
 
     def write_metadata():
         write_requirements(CHAMPION_PATH, 'requirements.txt')
-        data_train = read_data_nrows(DATAMETA['datapath_out'], 10)
+        data_train = read_data_nrows(os.path.join(DATAMETA['datapath_out'], DATAMETA['datafile']), 10)
         JSONFiles = pzmm.JSONFiles()
         # write input.json
         JSONFiles.writeVarJSON(data_train[PREDICTORS], isInput=True, jPath=CHAMPION_PATH)
