@@ -59,5 +59,6 @@ model_meta:
     lr: 0.1
     modelpath_out: ./models
     model_version: 2
+    champion_path: ./models/champion
 
 

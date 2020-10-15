@@ -459,12 +459,19 @@ def build_save_model_version (config):
     DATE = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     ID = "_".join([str(DATE), str(VERSION)])
     EXPORT_PATH = os.path.join(MODEL_META['modelpath_out'], ID)
+    CHAMPION_PATH = MODEL_META[MODEL_META['champion_path']]
 
     def save_model_version (features, model):
         setup(EXPORT_PATH)
+
         serving_input_fn = tf.estimator.export.build_parsing_serving_input_receiver_fn(
             tf.feature_column.make_parse_example_spec(features))
         modelpath_dir = model.export_saved_model(EXPORT_PATH, serving_input_fn)
+        modelpath_dir = "/".join(modelpath_dir.decode("utf-8").split('/')[:-1])
+
+        setup(CHAMPION_PATH)
+        copytree(modelpath_dir, CHAMPION_PATH)
+        
         return modelpath_dir
 
     return save_model_version
@@ -495,7 +502,6 @@ def main ():
     # Save the model --------------------------------------------
     logging.info('Save the new version of the model...')
     model_path_dir = save_model_version(features, model)
-    model_path_dir = "/".join(model_path_dir.decode("utf-8").split('/')[:-1])
     logging.info(f'The new model version is successfully stored in {model_path_dir}')
 
 if __name__ == "__main__":
