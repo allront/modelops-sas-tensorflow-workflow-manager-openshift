@@ -199,6 +199,42 @@ def print_metrics (corrmat, metrics):
         print(key, ':', value)
 
 
+def setup (modelfolder):
+    '''
+    Given modelfolder, remove old version
+    and create a new directory
+    :param modelfolder:
+    :return: modelfolder
+    '''
+
+    # if yes, delete it
+    if os.path.exists(modelfolder):
+        shutil.rmtree(modelfolder)
+        print("Older ", modelfolder, " folder removed!")
+    os.makedirs(modelfolder)
+    print("Directory ", modelfolder, " created!")
+    return modelfolder
+
+
+def copytree (src, dst, symlinks=False, ignore=None):
+    '''
+    Given src and dst,
+    it copies a directory or a files
+    :param src:
+    :param dst:
+    :param symlinks:
+    :param ignore:
+    :return: None
+    '''
+    for item in os.listdir(src):
+        s = os.path.join(src, item)
+        d = os.path.join(dst, item)
+        if os.path.isdir(s):
+            shutil.copytree(s, d, symlinks, ignore)
+        else:
+            shutil.copy2(s, d)
+
+
 # Build Pipeline -------------------------------------------------------------------------------------------------------
 def build_ingest_data (config):
     DATAMETA = config['data_meta']
@@ -373,7 +409,6 @@ def build_estimator (config, feature_columns):
 
 
 def build_train_pipeline (config):
-
     MODEL_META = config['model_meta']
     LOGS_DIR = MODEL_META['logs_dir']
 
@@ -401,7 +436,7 @@ def build_train_pipeline (config):
         shutil.rmtree(LOGS_DIR, ignore_errors=True)
         estimator_train = estimator.train(input_fn=train_input_fn)
         metrics = estimator_train.evaluate(input_fn=test_input_fn)
-        return estimator_train, metrics, test_input_fn, data_test
+        return estimator_train, metrics, test_input_fn, data_test, features
 
     return train_pipeline
 
@@ -418,6 +453,23 @@ def build_evaluator (config):
     return evaluator
 
 
+def build_save_model_version (config):
+    MODEL_META = config['model_meta']
+    VERSION = MODEL_META['model_version']
+    DATE = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    ID = "_".join([str(DATE), str(VERSION)])
+    EXPORT_PATH = os.path.join(MODEL_META['modelpath_out'], ID)
+
+    def save_model_version (features, model):
+        setup(EXPORT_PATH)
+        serving_input_fn = tf.estimator.export.build_parsing_serving_input_receiver_fn(
+            tf.feature_column.make_parse_example_spec(features))
+        modelpath_dir = model.export_saved_model(EXPORT_PATH, serving_input_fn)
+        return modelpath_dir
+
+    return save_model_version
+
+
 # Main -----------------------------------------------------------------------------------------------------------
 
 def main ():
@@ -430,15 +482,19 @@ def main ():
     logging.info('Compiling pipeline...')
     train_pipeline = build_train_pipeline(CONFIG)
     evaluator = build_evaluator(CONFIG)
+    save_model_version = build_save_model_version(CONFIG)
 
     # Training pipeline -----------------------------------------
     logging.info('Training pipeline...')
-    model, metrics, test_input_fn, data_test = train_pipeline()
+    model, metrics, test_input_fn, data_test, features = train_pipeline()
 
     # Evaluate Training -----------------------------------------
-    logging.info('Priting Test Evaluation metrics')
+    logging.info('Printing Test Evaluation metrics')
     evaluator(model, metrics, test_input_fn, data_test)
 
+    # Save the model --------------------------------------------
+    logging.info('Save the new version of the model...')
+    save_model_version(features, model)
 
 if __name__ == "__main__":
     main()
