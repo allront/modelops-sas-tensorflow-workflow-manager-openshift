@@ -468,10 +468,9 @@ def build_save_model_version (config):
             tf.feature_column.make_parse_example_spec(features))
         modelpath_dir = model.export_saved_model(EXPORT_PATH, serving_input_fn)
         modelpath_dir = "/".join(modelpath_dir.decode("utf-8").split('/')[:-1])
-
         setup(CHAMPION_PATH)
         copytree(modelpath_dir, CHAMPION_PATH)
-        
+        shutil.rmtree(modelpath_dir)
         return modelpath_dir
 
     return save_model_version

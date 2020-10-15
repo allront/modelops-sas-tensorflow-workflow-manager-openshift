@@ -61,7 +61,7 @@ model_meta:
     model_version: 2
     champion_path: ./models/champion
 model_registration:
-    model_metadata:
+    metadata:
         outvar_names:
             - P_BAD0
             - P_BAD1
@@ -71,11 +71,12 @@ model_registration:
             - 0
             - 1
         eventprob: 0.5
+        modelname: Tensorflow_BoostedTreesClassifier
+        project_name: sas_modelops_tensorflow_openshift
     connection:
         server: http://172.28.106.218
         username: russasdemo
         password: Orion123
-    modelrepository_meta:
-        project_name: sas_modelops_tensorflow_openshift
+
 
 

@@ -45,13 +45,14 @@ def load_yaml (filepath):
         conn_dict = yaml.load(file, Loader=yaml.FullLoader)
     return conn_dict
 
+
 def read_data_nrows (datapath: str, nrows) -> pd.DataFrame:
     '''
     Read csv for creating a nrows Dataframe
     :param datapath:
     :return: data
     '''
-    df = pd.read_csv(datapath, sep=',',nrows=nrows)
+    df = pd.read_csv(datapath, sep=',', nrows=nrows)
     return df
 
 
@@ -71,9 +72,47 @@ def write_requirements (folder, filename):
     else:
         print("pip freeze command fails!")
 
-# Build Pipeline -------------------------------------------------------------------------------------------------------
-def build_write_metadata(config):
 
+def get_output_variables (names, labels, eventprob):
+    '''
+    Given variable names, labels and event probability,
+    it creates dataframes for pzmm metadata generation
+    :param names:
+    :param labels:
+    :param eventprob:
+    :return: outputVar
+    '''
+    outputVar = pd.DataFrame(columns=names)
+    outputVar[names[0]] = [random.random(), random.random()]
+    outputVar[names[1]] = [random.random(), random.random()]
+    outputVar[names[2]] = labels
+    outputVar[names[3]] = eventprob
+    return outputVar
+
+
+def zip_folder (folder_to_zip_path, rmtree=False):
+    '''
+    Given the folder to zip path,
+    create an archive
+    :param folder_to_zip_path:
+    :param rmtree:
+    :return: zipath
+    '''
+    path_sep = '/'
+    root_dir = path_sep.join(folder_to_zip_path.split('/')[:-1])
+    base_dir = folder_to_zip_path.split('/')[-1]
+    zipath = shutil.make_archive(
+        folder_to_zip_path,  # folder to zip
+        'zip',  # the archive format - or tar, bztar, gztar
+        root_dir=root_dir,  # folder to zip root
+        base_dir=base_dir)  # folder to zip name
+    if rmtree:
+        shutil.rmtree(folder_to_zip_path)  # remove .zip folder
+    return zipath
+
+
+# Build Pipeline -------------------------------------------------------------------------------------------------------
+def build_write_metadata (config):
     VARIABLES_SCHEMA_META = config['variables_schema_meta']
     TARGET = VARIABLES_SCHEMA_META['target']
     CATEGORICAL_VARIABLES = VARIABLES_SCHEMA_META['categorical_predictors']
@@ -82,14 +121,42 @@ def build_write_metadata(config):
     DATAMETA = config['data_meta']
     MODEL_META = config['model_meta']
     CHAMPION_PATH = MODEL_META['champion_path']
+    MODEL_REG_META = config['model_registration']['metadata']
 
-    def write_metadata():
+    def write_metadata ():
         write_requirements(CHAMPION_PATH, 'requirements.txt')
         data_train = read_data_nrows(os.path.join(DATAMETA['datapath_out'], DATAMETA['datafile']), 10)
         JSONFiles = pzmm.JSONFiles()
         # write input.json
         JSONFiles.writeVarJSON(data_train[PREDICTORS], isInput=True, jPath=CHAMPION_PATH)
+        # write output.json
+        outputvars = get_output_variables(MODEL_REG_META['outvar_names'], MODEL_REG_META['labels'],
+                                          MODEL_REG_META['eventprob'])
+        JSONFiles.writeVarJSON(outputvars, isInput=False, jPath=CHAMPION_PATH)
+        # write modelproperties.json
+        JSONFiles.writeModelPropertiesJSON(modelName=MODEL_REG_META['modelname'],
+                                           modelDesc='The retrained classifier for Tensorflow Boosted Trees models',
+                                           targetVariable=TARGET,
+                                           modelType='Boosted Tree',
+                                           modelPredictors=PREDICTORS,
+                                           targetEvent=1,
+                                           numTargetCategories=1,
+                                           eventProbVar='EM_EVENTPROBABILITY',
+                                           jPath=CHAMPION_PATH,
+                                           modeler='ivnard')
+        # Zip TF variables
+        TF_SAVEDMODEL_NAME = \
+        [file for file in os.listdir(CHAMPION_PATH) if os.path.isdir(os.path.join(CHAMPION_PATH, file))][0]
+        TF_SAVEDMODEL_PATH = os.path.join(CHAMPION_PATH, TF_SAVEDMODEL_NAME)
+        # Zip TF SavedModel format
+        ZIP_TF_SAVEDMODEL_PATH = zip_folder(TF_SAVEDMODEL_PATH, rmtree=True)
+        # Zip the entire folder
+        ZIP_CHAMPION_FOLDER = zip_folder(CHAMPION_PATH)
+        return ZIP_TF_SAVEDMODEL_PATH, ZIP_CHAMPION_FOLDER
+
     return write_metadata
+
+
 # Main -----------------------------------------------------------------------------------------------------------
 
 def main ():
@@ -101,7 +168,8 @@ def main ():
     # Build pipeline --------------------------------------------
     logging.info('Writing Metadata associated to the model...')
     write_metadata = build_write_metadata(CONFIG)
-    write_metadata()
+    zip_tf_savedmodel, zip_chmp_folder = write_metadata()
+    logging.info(f'Tf model zipped in {zip_tf_savedmodel} and Model folder for SAS Model Manager zipped in {zip_chmp_folder}')
 
 if __name__ == "__main__":
     main()
