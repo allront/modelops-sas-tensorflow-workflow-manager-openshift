@@ -48,8 +48,8 @@ echo "$(date '+%x %r') INFO Execute retrain.py"
 sudo chmod +x ./train.py
 python3 train.py
 
-#echo "$(date '+%x %r') INFO Execute retrain.py"
-#sudo chmod +x ./register.py
-#python3 register.py
+echo "$(date '+%x %r') INFO Execute retrain.py"
+sudo chmod +x ./register.py
+python3 register.py
 
 

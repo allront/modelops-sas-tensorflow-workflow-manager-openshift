@@ -60,5 +60,11 @@ model_meta:
     modelpath_out: ./models
     model_version: 2
     champion_path: ./models/champion
+model_registration:
+        server: http://172.28.106.218
+        username: russasdemo
+        password: Orion123
+    modelrepository_meta:
+        project_name: sas_modelops_tensorflow_openshift
 
 

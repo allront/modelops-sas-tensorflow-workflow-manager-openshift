@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-train is the module for retraining the champion model on server.
+train.py is the module for retraining the champion model on server.
 
 Steps:
 """
