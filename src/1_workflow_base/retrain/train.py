@@ -495,6 +495,7 @@ def main ():
     # Save the model --------------------------------------------
     logging.info('Save the new version of the model...')
     model_path_dir = save_model_version(features, model)
+    model_path_dir = "/".join(model_path_dir.decode("utf-8").split('/')[:-1])
     logging.info(f'The new model version is successfully stored in {model_path_dir}')
 
 if __name__ == "__main__":
