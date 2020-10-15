@@ -8,7 +8,7 @@ Steps:
 
 # General
 import os
-# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # set before import tf
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # set before import tf
 import functools
 import shutil
 import datetime
@@ -494,7 +494,8 @@ def main ():
 
     # Save the model --------------------------------------------
     logging.info('Save the new version of the model...')
-    save_model_version(features, model)
+    model_path_dir = save_model_version(features, model)
+    logging.info(f'The new model version is successfully stored in {model_path_dir}')
 
 if __name__ == "__main__":
     main()
