@@ -3,6 +3,8 @@
 """
 register.py is the module for register the champion model on server.
 Steps:
+#
+#
 """
 
 # General
