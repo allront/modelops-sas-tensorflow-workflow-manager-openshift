@@ -124,13 +124,13 @@ def run_model_tracking (server, user, password, zipath, projectname, modelname):
     '''
 
     with Session(hostname=server, username=user, password=password, verify_ssl=False):
-        project = model_repository.get_project(projectname)
 
         zipfile = open(zipath, 'rb')
 
         model_repository.import_model_from_zip(modelname,
-                                               project,
-                                               file=zipfile
+                                               projectname,
+                                               file=zipfile,
+                                               version='new'
                                                )
         zipfile.close()
 
@@ -210,7 +210,7 @@ def main ():
         f'Tf model zipped in {zip_tf_savedmodel} and Model folder for SAS Model Manager zipped in {zip_chmp_folder}')
     logging.info('Registering the model...')
     model_tracking = build_run_model_tracking(CONFIG, zip_chmp_folder)
-    model_tracking
+    #model_tracking()
     logging.info('Registration completed!')
 
 if __name__ == "__main__":
