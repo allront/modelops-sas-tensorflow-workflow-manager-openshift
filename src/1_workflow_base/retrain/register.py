@@ -209,8 +209,8 @@ def main ():
     logging.info(
         f'Tf model zipped in {zip_tf_savedmodel} and Model folder for SAS Model Manager zipped in {zip_chmp_folder}')
     logging.info('Registering the model...')
-    run_model_tracking = build_run_model_tracking(CONFIG, zip_chmp_folder)
-    run_model_tracking()
+    model_tracking = build_run_model_tracking(CONFIG, zip_chmp_folder)
+    model_tracking
     logging.info('Registration completed!')
 
 if __name__ == "__main__":
