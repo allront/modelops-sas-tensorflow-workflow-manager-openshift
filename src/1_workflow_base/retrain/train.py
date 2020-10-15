@@ -459,10 +459,10 @@ def build_save_model_version (config):
     DATE = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
     ID = "_".join([str(DATE), str(VERSION)])
     EXPORT_PATH = os.path.join(MODEL_META['modelpath_out'], ID)
-    CHAMPION_PATH = MODEL_META[MODEL_META['champion_path']]
+    CHAMPION_PATH = MODEL_META['champion_path']
 
     def save_model_version (features, model):
-        setup(EXPORT_PATH)
+        setup(MODEL_META['modelpath_out'])
 
         serving_input_fn = tf.estimator.export.build_parsing_serving_input_receiver_fn(
             tf.feature_column.make_parse_example_spec(features))
