@@ -1,0 +1,16 @@
+{
+    "name": "Tensorflow_BoostedTreesClassifier",
+    "description": "The retrained classifier for Tensorflow Boosted Trees models : BAD = REASON + JOB + LOAN + MORTDUE + VALUE + YOJ + DEROG + DELINQ + CLAGE + NINQ + CLNO + DEBTINC",
+    "function": "classification",
+    "scoreCodeType": "python",
+    "trainTable": " ",
+    "trainCodeType": "Python",
+    "algorithm": "Boosted Tree",
+    "targetVariable": "BAD",
+    "targetEvent": 1,
+    "targetLevel": "BINARY",
+    "eventProbVar": "EM_EVENTPROBABILITY",
+    "modeler": "ivnard",
+    "tool": "Python 3",
+    "toolVersion": "3.7.4"
+}

@@ -1,0 +1,26 @@
+[
+    {
+        "name": "P_BAD0",
+        "length": 8,
+        "type": "decimal",
+        "level": "interval"
+    },
+    {
+        "name": "P_BAD1",
+        "length": 8,
+        "type": "decimal",
+        "level": "interval"
+    },
+    {
+        "name": "EM_CLASSIFICATION",
+        "length": 8,
+        "type": "decimal",
+        "level": "interval"
+    },
+    {
+        "name": "EM_EVENTPROBABILITY",
+        "length": 8,
+        "type": "decimal",
+        "level": "interval"
+    }
+]
