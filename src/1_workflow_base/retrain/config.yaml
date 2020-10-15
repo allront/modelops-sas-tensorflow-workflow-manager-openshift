@@ -71,6 +71,8 @@ model_registration:
             - 0
             - 1
         eventprob: 0.5
+        projectname: sas_modelops_tensorflow_openshift
+        modelname: Tensorflow_BoostedTreesClassifier
     registration:
         server: http://172.28.106.218
         username: russasdemo
