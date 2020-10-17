@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # O_create_project.sh
-# O_create_project.sh is a script for setting OKD project
+# O_create_project.sh is a script for setting OKD project from control node
 #
 # Variables:
 # PROJECT_NAME=${1:-sasmlopshmeq} the name of the project

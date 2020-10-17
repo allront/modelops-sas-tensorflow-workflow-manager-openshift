@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # O_env_up.sh
-# O_env_up.sh is a script for setting all demo variables and spin up the OKD environment
+# O_env_up.sh is a script for setting all demo variables and spin up the OKD environment from control node
 #
 # Variables:
 # PROJECT_DIR=${1} path of the project folder
