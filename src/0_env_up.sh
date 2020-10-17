@@ -11,8 +11,7 @@
 # Steps:
 # 1 - Export the path of the project folder
 # 2 - Export minishift path
-# 3 - Start minishift
-# 4 - Set oc cli
+# 3 - Start minishift and set oc cli
 
 #Variables
 PROJECT_DIR=${1}
@@ -27,26 +26,30 @@ export PROJECT_DIR=/opt/demos/modelops
 # 2 - Export minishift path
 echo "$(date '+%x %r') INFO Export Minishift path and check status..."
 export PATH=$PATH:${MINISHIFTPATH}
-STATUS=minishift status | head -n 3 | tail -n 1 | cut -d \   -f 3
+STATUS=$(minishift status | head -n 3 | tail -n 1 | cut -d \   -f 3)
 echo "$(date '+%x %r') INFO The remote Openshift enviroment is  ${STATUS}!"
 
 # 3 - Start minishift
-echo "$(date '+%x %r') INFO Starting the remote Openshift..."
-minishift start --remote-ipaddress ${REMOTEIP} --remote-ssh-user ${USEROKD} --remote-ssh-key /home/ec2-user/.ssh/id_rsa
+if [ ${STATUS} = "stopped" ]; then
+  
+  echo "$(date '+%x %r') INFO Starting the remote Openshift..."
+  minishift start --remote-ipaddress ${REMOTEIP} --remote-ssh-user ${USEROKD} --remote-ssh-key /home/ec2-user/.ssh/id_rsa
+  # Set oc cli
+  echo ""
+  echo "------------------------------------------------------------"
+  echo ""
+  echo "Please:"
+  echo ""
+  echo "1. To set oc cli run the following command:"
+  echo ""
+  echo "minishift oc-env"
+  echo ""
+  echo "2. Export path as the command suggests"
+  echo ""
+  echo "------------------------------------------------------------"
 
-# 4 - Set oc cli
-echo ""
-echo "------------------------------------------------------------"
-echo "Please:"
-echo ""
-echo "1. To set oc cli run the following command:"
-echo ""
-echo "minishift oc-env"
-echo ""
-echo "2. Export path as the command suggests"
-echo ""
-echo ""
-echo "------------------------------------------------------------"
+fi
+
 
 
 
