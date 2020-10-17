@@ -30,8 +30,8 @@ STATUS=$(minishift status | head -n 3 | tail -n 1 | cut -d \   -f 3)
 echo "$(date '+%x %r') INFO The remote Openshift enviroment is  ${STATUS}!"
 
 # 3 - Start minishift
-if [ ${STATUS} = "stopped" ]; then
-  
+if [ ${STATUS} != "stopped" ]; then
+
   echo "$(date '+%x %r') INFO Starting the remote Openshift..."
   minishift start --remote-ipaddress ${REMOTEIP} --remote-ssh-user ${USEROKD} --remote-ssh-key /home/ec2-user/.ssh/id_rsa
   # Set oc cli
