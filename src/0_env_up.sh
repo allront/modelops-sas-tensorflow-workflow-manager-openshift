@@ -1,9 +1,53 @@
-export PATH=$PATH:/home/ec2-user/minishift-1.34.2-linux-amd64/
-minishift status
-minishift start --remote-ipaddress 10.249.20.186 --remote-ssh-user root --remote-ssh-key /home/ec2-user/.ssh/id_rsa
-oc status
-minishift oc-env
-export PATH="/home/ec2-user/.minishift/cache/oc/v3.11.0/linux:$PATH"
-eval $(minishift oc-env)
+#!/usr/bin/env bash
+# O_env_up.sh
+# O_env_up.sh is a script for setting all demo variables and spin up the OKD environment
+#
+# Variables:
+# PROJECT_DIR=${1} path of the project folder
+# MINISHIFTPATH=${2:-/home/ec2-user/minishift-1.34.2-linux-amd64/} path of the folder with minishift
+# REMOTEIP=${3:-10.249.20.186} the ip of remote OKD
+# USEROKD=${4:-root}
+#
+# Steps:
+# 1 - Export the path of the project folder
+# 2 - Export minishift path
+# 3 - Start minishift
+# 4 - Set oc cli
+
+#Variables
+PROJECT_DIR=${1}
+MINISHIFTPATH=${1:-/home/ec2-user/minishift-1.34.2-linux-amd64/}
+REMOTEIP=${2:-10.249.20.186}
+USEROKD=${3:-root}
+
+# 1 - Export the path of the project folder
+echo "$(date '+%x %r') INFO Export the path of the project folder..."
 export PROJECT_DIR=/opt/demos/modelops
+
+# 2 - Export minishift path
+echo "$(date '+%x %r') INFO Export Minishift path and check status..."
+export PATH=$PATH:${MINISHIFTPATH}
+STATUS=minishift status | head -n 3 | tail -n 1 | cut -d \   -f 3
+echo "$(date '+%x %r') INFO The remote Openshift enviroment is  ${STATUS}!"
+
+# 3 - Start minishift
+echo "$(date '+%x %r') INFO Starting the remote Openshift..."
+minishift start --remote-ipaddress ${REMOTEIP} --remote-ssh-user ${USEROKD} --remote-ssh-key /home/ec2-user/.ssh/id_rsa
+
+# 4 - Set oc cli
+echo ""
+echo "------------------------------------------------------------"
+echo "Please:"
+echo ""
+echo "1. To set oc cli run the following command:"
+echo ""
+echo "minishift oc-env"
+echo ""
+echo "2. Export path as the command suggests"
+echo ""
+echo ""
+echo "------------------------------------------------------------"
+
+
+
 
