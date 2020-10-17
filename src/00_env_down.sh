@@ -10,7 +10,7 @@
 # 2 - Stop minishift
 
 #Variables
-PROJECTNAME=${1:sasmlopshmeq}
+PROJECTNAME=${1:-sasmlopshmeq}
 
 # 1 - Delete project
 echo "$(date '+%x %r') INFO Deleting OKD ${PROJECTNAME} project..."
