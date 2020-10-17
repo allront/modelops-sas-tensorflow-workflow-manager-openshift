@@ -29,6 +29,6 @@ fi
 echo "$(date '+%x %r') INFO Execute prebuild.py"
 source ${VENV}
 sudo chmod +x ./prebuild.py
-python prebuild.py ${PROJECT_NAME} ${CONFIG_FILE}
+python prebuild.py "${PROJECT_NAME}" ${CONFIG_FILE}
 
 
