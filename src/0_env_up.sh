@@ -27,7 +27,7 @@ export PROJECT_DIR=/opt/demos/modelops
 echo "$(date '+%x %r') INFO Export Minishift path and check status..."
 export PATH=$PATH:${MINISHIFTPATH}
 STATUS=$(minishift status | head -n 3 | tail -n 1 | cut -d \   -f 3)
-echo "$(date '+%x %r') INFO The remote Openshift enviroment is  ${STATUS}!"
+echo "$(date '+%x %r') INFO The remote Openshift enviroment is ${STATUS}!"
 
 # 3 - Start minishift
 if [ ${STATUS} != "stopped" ]; then
@@ -36,17 +36,19 @@ if [ ${STATUS} != "stopped" ]; then
   minishift start --remote-ipaddress ${REMOTEIP} --remote-ssh-user ${USEROKD} --remote-ssh-key /home/ec2-user/.ssh/id_rsa
   # Set oc cli
   echo ""
-  echo "------------------------------------------------------------"
+  echo "--------------------------------------------------------------"
   echo ""
   echo "Please:"
   echo ""
-  echo "1. To set oc cli run the following command:"
+  echo "1. To set oc cli running the following command:"
   echo ""
   echo "minishift oc-env"
   echo ""
   echo "2. Export path as the command suggests"
   echo ""
-  echo "------------------------------------------------------------"
+  echo "3. Run the following command to get info about user and project"
+  echo ""
+  echo "---------------------------------------------------------------"
 
 fi
 
