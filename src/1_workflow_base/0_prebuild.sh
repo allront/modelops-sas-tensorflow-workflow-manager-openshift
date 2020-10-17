@@ -10,7 +10,7 @@
 # 2 - Execute python script
 
 # Variables
-PROJECT_NAME=${1:-sas_modelops_tensorflow_openshift}
+PROJECT_NAME=${1:-SAS ModelOps Tensorflow Openshift}
 CONFIG_FILE="config.yaml"
 WORKDIR=${PROJECT_DIR}/src/1_workflow_base/prebuild/
 VENV=${PROJECT_DIR}/env/bin/activate
