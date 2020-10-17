@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 2_create_image_streams.sh
 # 2_create_image_streams.sh is a script to deploy image streams on OKD
 #

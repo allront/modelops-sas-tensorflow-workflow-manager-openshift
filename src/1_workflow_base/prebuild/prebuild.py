@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 """
@@ -17,9 +16,9 @@ import json
 import sys
 import os
 import ruamel.yaml as yaml
-import logging as log
-log.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',
-                        level=log.INFO)
+import logging
+logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',
+                        level=logging.INFO)
 import warnings
 warnings.simplefilter('ignore', yaml.error.UnsafeLoaderWarning)
 
@@ -183,14 +182,8 @@ def get_model_artefact(server: str, token: str, modelrepo_endpoint: str,
                 data.write(content)
         data.close()
         return 0
-#  Main
-def main():
-    # Read configuration and set the PROJECT_NAME variable
-    PROJECT_NAME = sys.argv[1]
-    CONFIGPATH = sys.argv[2]
 
-    stream = open(CONFIGPATH, 'r')
-    config = yaml.load(stream)
+def build_prebuild(config):
 
     # Variables
     SERVER = config['connection']['server']
@@ -202,19 +195,44 @@ def main():
     MODEL_PATH = config['server_meta']['model_path']
     MODEL_NAME = config['server_meta']['model_artefact_name']
 
-    log.info("Get Token...")
-    TOKEN = get_authorization(SERVER, AUTHURI, USERNAME, PASSWORD)
-    log.info('Get Project ID...')
-    PROJECT_ID = get_project_id(SERVER, TOKEN, MODELREPO_ENDPOINT, PROJECT_NAME)
-    log.info('Get Champion ID...')
-    CHAMPION_ID = get_champion_id(SERVER, TOKEN, MODELREPO_ENDPOINT, PROJECT_ID)
-    log.info('Get Model Content ID...')
-    MODEL_CONTENT_ID = get_model_content_id(SERVER, TOKEN, MODELREPO_ENDPOINT, CHAMPION_ID)
-    log.info('Downloading Model Content...')
-    STATUS = get_model_artefact(SERVER, TOKEN, MODELREPO_ENDPOINT, CHAMPION_ID, MODEL_CONTENT_ID, MODEL_PATH, MODEL_NAME)
-    if STATUS != 0:
-        log.error("Unable to download model artefact!")
-    return STATUS
+    def prebuild(project_name):
+
+        logging.info("Get Token...")
+        TOKEN = get_authorization(SERVER, AUTHURI, USERNAME, PASSWORD)
+        logging.info('Get Project ID...')
+        PROJECT_ID = get_project_id(SERVER, TOKEN, MODELREPO_ENDPOINT, project_name)
+        logging.info('Get Champion ID...')
+        CHAMPION_ID = get_champion_id(SERVER, TOKEN, MODELREPO_ENDPOINT, PROJECT_ID)
+        logging.info('Get Model Content ID...')
+        MODEL_CONTENT_ID = get_model_content_id(SERVER, TOKEN, MODELREPO_ENDPOINT, CHAMPION_ID)
+        logging.info('Downloading Model Content...')
+        STATUS = get_model_artefact(SERVER, TOKEN, MODELREPO_ENDPOINT, CHAMPION_ID, MODEL_CONTENT_ID, MODEL_PATH,
+                                    MODEL_NAME)
+        if STATUS != 0:
+            logging.error("Unable to download model artefact!")
+        return STATUS
+
+    return prebuild
+
+
+#  Main
+def main():
+
+    # Read configuration ------------------------------------
+    logging.info('Loading configuration file...')
+    PROJECT_NAME = sys.argv[1]
+    CONFIGPATH = sys.argv[2]
+    stream = open(CONFIGPATH, 'r')
+    config = yaml.load(stream)
+
+    # Build  -----------------------------------------------
+    logging.info('Build Prebuild...')
+    prebuild = build_prebuild(config)
+
+    # Run Prebuild -----------------------------------------
+    logging.info('Run Prebuild process...')
+    prebuild(PROJECT_NAME)
+    logging.info('Prebuild successfully completed!')
 
 if __name__ == "__main__":
     main()

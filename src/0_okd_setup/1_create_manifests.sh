@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 1_create_manifests.sh
 # O_prebuild.sh is a script to convert the "production" docker-compose in kubernetes manifests with Kompose
 #

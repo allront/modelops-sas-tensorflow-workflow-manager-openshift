@@ -5,4 +5,5 @@ oc status
 minishift oc-env
 export PATH="/home/ec2-user/.minishift/cache/oc/v3.11.0/linux:$PATH"
 eval $(minishift oc-env)
+export PROJECT_DIR=/opt/demos/modelops
 

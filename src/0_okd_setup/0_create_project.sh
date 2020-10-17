@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # O_create_project.sh
 # O_create_project.sh is a script for setting OKD project
 #

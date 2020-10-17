@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 1_build.sh
 # 1_build.sh builds the image on the local registry
 #

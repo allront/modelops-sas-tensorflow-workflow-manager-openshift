@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 1_deploy.sh
 # 1_deploy.sh pushes Champion Images to OpenShift remotly
 #
