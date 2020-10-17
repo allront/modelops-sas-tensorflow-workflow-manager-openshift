@@ -41,6 +41,8 @@ if [ ${STATUS} != "stopped" ]; then
   echo ""
   echo "3. Run the following command to get info about user and project"
   echo ""
+  echo "oc status"
+  echo ""
   echo "4. Remember to export the PROJECT_DIR path"
   echo ""
   echo "export PROJECT_DIR=</path/of/project>"
