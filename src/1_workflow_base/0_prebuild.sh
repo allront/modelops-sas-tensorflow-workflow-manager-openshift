@@ -21,7 +21,6 @@ VENV=/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/env/bin/activ
 
 MODEL_DIR="./model"
 
-
 # 1 - Clean target repo
 echo "$(date '+%x %r') INFO Setup Model Folder..."
 cd "$WORKDIR"

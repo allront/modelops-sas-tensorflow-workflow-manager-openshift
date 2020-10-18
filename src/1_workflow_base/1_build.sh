@@ -16,7 +16,12 @@
 #   4 - Commit the Champion Tensorflow image (https://docs.docker.com/engine/reference/commandline/commit/)
 
 # Variables
-WORKDIR=${PROJECT_DIR}/src/1_workflow_base
+
+# From server
+#WORKDIR=${PROJECT_DIR}/src/1_workflow_base
+# From SAS Viya
+WORKDIR=/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/1_workflow_base
+
 MODEL_PATH=$WORKDIR/prebuild/model/
 MODEL_NAME=${1:-champion_model.zip}
 #MODEL_DIR=$(find $MODEL_PATH -type d ! -name '*.*' | head -n 2 | tail -n 1)
