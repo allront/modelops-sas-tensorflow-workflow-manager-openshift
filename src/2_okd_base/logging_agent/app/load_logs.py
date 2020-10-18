@@ -8,6 +8,7 @@ Steps:
 1- Read the log file
 2- Split dataframe
 2- Push logs directly to a backend from within an application.
+Author: Ivan Nardini (ivan.nardini@sas.com)
 """
 
 # Libraries

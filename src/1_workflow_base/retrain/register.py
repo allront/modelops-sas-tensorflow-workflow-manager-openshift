@@ -5,6 +5,7 @@ register.py is the module for register the champion model on server.
 Steps:
 #
 #
+Author: Ivan Nardini (ivan.nardini@sas.com)
 """
 
 # General

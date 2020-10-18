@@ -9,6 +9,8 @@
 # 0 - Login
 # 1 - Delete project
 # 2 - Stop minishift
+#
+# Author: Ivan Nardini (ivan.nardini@sas.com)
 
 #Variables
 PROJECTNAME=${1:-sasmlopshmeq}

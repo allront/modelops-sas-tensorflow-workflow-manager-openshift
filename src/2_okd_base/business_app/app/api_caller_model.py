@@ -8,6 +8,7 @@ Steps:
 1- Load the data
 2- Score the data via API calls
 3- Log the scored data
+Author: Ivan Nardini (ivan.nardini@sas.com)
 """
 
 import os

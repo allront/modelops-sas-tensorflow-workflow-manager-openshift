@@ -13,6 +13,8 @@
 # 2 - Create service account
 # 3 - Add policy roles
 # 4 - Print service account info and ask to export the token
+#
+# Author: Ivan Nardini (ivan.nardini@sas.com)
 
 # Variables
 PROJECT_NAME=${1:-sasmlopshmeq}

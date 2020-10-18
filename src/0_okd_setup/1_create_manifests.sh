@@ -9,6 +9,8 @@
 # Steps:
 # 1 - Clean openshift directory
 # 2 - Execute kompose convert command
+#
+# Author: Ivan Nardini (ivan.nardini@sas.com)
 
 # Variables
 OKD_NAME=${1:-openshift}

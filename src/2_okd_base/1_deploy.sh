@@ -5,6 +5,8 @@
 # 0 - Clean ImageStreams directory
 # 1 - Move Image stream files
 # 2 - Apply manifests
+#
+# Author: Ivan Nardini (ivan.nardini@sas.com)
 
 # Variables
 OKD_NAME=${1:-openshift}

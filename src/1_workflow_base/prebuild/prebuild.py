@@ -8,6 +8,7 @@ Steps:
 3 - Get Champion ID
 4 - Get Model Content ID
 5 - Download Model Artefact
+Author: Ivan Nardini (ivan.nardini@sas.com)
 """
 #LIBRARIES
 import requests

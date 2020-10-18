@@ -10,6 +10,8 @@
 # Steps:
 # 1 - Check cluster status
 # 2 - Start minishift and set oc cli
+#
+# Author: Ivan Nardini (ivan.nardini@sas.com)
 
 #Variables
 MINISHIFTPATH=${1:-/home/ec2-user/minishift-1.34.2-linux-amd64/}

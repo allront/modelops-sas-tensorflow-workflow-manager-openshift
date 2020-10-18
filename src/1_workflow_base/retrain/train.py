@@ -4,6 +4,7 @@
 train.py is the module for retraining the champion model on server.
 
 Steps:
+Author: Ivan Nardini (ivan.nardini@sas.com)
 """
 
 # General

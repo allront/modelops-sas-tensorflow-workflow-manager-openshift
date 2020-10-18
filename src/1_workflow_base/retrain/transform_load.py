@@ -8,6 +8,7 @@ Steps:
 1- Load performance csv files in pandas Dataframe
 2- Append one to another
 3- Write on disk the training dataset
+Author: Ivan Nardini (ivan.nardini@sas.com)
 """
 
 import os

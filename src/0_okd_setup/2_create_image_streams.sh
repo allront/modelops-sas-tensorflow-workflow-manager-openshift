@@ -7,6 +7,8 @@
 #
 # Steps:
 # Create imagestream in a loop
+#
+# Author: Ivan Nardini (ivan.nardini@sas.com)
 
 # Variables
 OKD_NAME=${1:-openshift}
