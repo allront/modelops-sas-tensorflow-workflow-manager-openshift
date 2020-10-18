@@ -20,8 +20,9 @@ echo "$(date '+%x %r') INFO Cleaning ImageStreams directory..."
 if [ -d "${IMAGE_STREAMS_DIR}" ]; then
   rm -Rf "${IMAGE_STREAMS_DIR}"
   mkdir -m 777 "${IMAGE_STREAMS_DIR}"
+else
+  mkdir -m 777 "${IMAGE_STREAMS_DIR}"
 fi
-mkdir -m 777 "${IMAGE_STREAMS_DIR}"
 
 # 1 - Move Image stream files
 echo "$(date '+%x %r') INFO Move imagestream manifests in ${IMAGE_STREAMS_DIR} directory..."
