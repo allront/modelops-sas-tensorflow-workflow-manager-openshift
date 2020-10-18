@@ -14,6 +14,8 @@
 #   2 - Run a temporary Tensorflow container
 #   3 - Copy Model inside temporary Tensorflow container
 #   4 - Commit the Champion Tensorflow image (https://docs.docker.com/engine/reference/commandline/commit/)
+#
+# Author: Ivan Nardini (ivan.nardini@sas.com)
 
 # Variables
 

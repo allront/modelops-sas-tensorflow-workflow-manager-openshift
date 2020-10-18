@@ -8,6 +8,8 @@
 # Steps:
 # 1 - Clean target repo
 # 2 - Execute python script
+#
+# Author: Ivan Nardini (ivan.nardini@sas.com)
 
 # Variables
 PROJECT_NAME=${1:-SAS ModelOps Tensorflow Openshift}

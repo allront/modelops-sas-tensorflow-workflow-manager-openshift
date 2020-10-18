@@ -10,6 +10,8 @@
 #   0 - Transform and Load the performance tables
 #   1 - Retrain the tensorflow model
 #   2 - Register the model in SAS Model Manager with a new version
+#
+# Author: Ivan Nardini (ivan.nardini@sas.com)
 
 # Variables
 WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain

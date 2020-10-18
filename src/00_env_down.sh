@@ -16,7 +16,7 @@
 PROJECTNAME=${1:-sasmlopshmeq}
 OKD_NAME=${1:-openshift}
 OKD_DIR=${PROJECT_DIR}/${OKD_NAME}
-PVNAME="logs"
+#PVNAME="logs"
 
 # 0 - Login
 echo "$(date '+%x %r') INFO Login with developer..."
@@ -29,7 +29,7 @@ cd "${OKD_DIR}"
 
 # 1 - Delete all resources and persistent volumes
 oc delete all --all
-oc delete pv "${PVNAME}"
+#oc delete pv "${PVNAME}"
 
 # 1 - Delete project
 echo "$(date '+%x %r') INFO Deleting OKD ${PROJECTNAME} project..."
