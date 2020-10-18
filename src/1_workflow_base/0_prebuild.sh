@@ -12,8 +12,13 @@
 # Variables
 PROJECT_NAME=${1:-SAS ModelOps Tensorflow Openshift}
 CONFIG_FILE="config.yaml"
-WORKDIR=${PROJECT_DIR}/src/1_workflow_base/prebuild/
-VENV=${PROJECT_DIR}/env/bin/activate
+# From server
+#WORKDIR=${PROJECT_DIR}/src/1_workflow_base/prebuild/
+#VENV=${PROJECT_DIR}/env/bin/activate
+# From SAS Viya
+WORKDIR=/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/1_workflow_base/prebuild/
+VENV=/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/env/bin/activate
+
 MODEL_DIR="./model"
 
 
