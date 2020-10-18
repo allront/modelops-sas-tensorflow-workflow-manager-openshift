@@ -27,7 +27,7 @@ MODEL_DIR="./model"
 echo "$(date '+%x %r') INFO Setup Model Folder..."
 cd "$WORKDIR"
 if [ -d "${MODEL_DIR}" ]; then
-  rm -Rf "${MODEL_DIR}"
+  sudo rm -Rf "${MODEL_DIR}"
   mkdir -m 777 "${MODEL_DIR}"
 fi
 
