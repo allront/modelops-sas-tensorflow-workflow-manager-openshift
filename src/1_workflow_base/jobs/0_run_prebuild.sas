@@ -1,12 +1,16 @@
-filename logfile '/opt/demos/sas_workflow_openshift_demo/logs/0_prebuild.log';
+filename logfile '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs/0_prebuild.log';
 
 proc printto log=logfile;
 run;
 
-filename bashpipe pipe "/opt/demos/sas_workflow_openshift_demo/src/base/0_prebuild.sh";
+%global ProjectName;
+
+filename bashpipe pipe "/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/base/0_prebuild.sh &ProjectName.";
 
 data _null_;
 infile bashpipe;
 input;
 put _infile_;
 run;
+
+

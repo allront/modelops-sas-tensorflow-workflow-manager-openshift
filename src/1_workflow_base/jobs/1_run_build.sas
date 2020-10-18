@@ -1,9 +1,9 @@
-filename logfile '/opt/demos/sas_workflow_openshift_demo/logs/1_build.log';
+filename logfile '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs/1_build.log';
 
 proc printto log=logfile;
 run;
 
-filename bashpipe pipe "/opt/demos/sas_workflow_openshift_demo/src/base/1_build.sh";
+filename bashpipe pipe "/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/base/1_build.sh";
 
 data _null_;
 infile bashpipe;
