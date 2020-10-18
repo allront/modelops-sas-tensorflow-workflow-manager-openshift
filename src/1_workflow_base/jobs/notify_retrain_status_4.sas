@@ -1,10 +1,23 @@
+/*************************************************************
+*************** Notify Retrain Model Job *********************
+**************************************************************
+
+Program Name : notify_retrain_status_4.sas
+Owner : ivnard that developed this code
+Program Description : Send a notification on MS team
+for retraining model status
+
+**************************************************************
+**************************************************************
+**************************************************************/
+
 options noquotelenmax;
-filename logfile '/opt/demos/sas_workflow_openshift_demo/logs/notify3.log';
+filename logfile '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs/notify4.log';
 
 proc printto log=logfile;
 run;
 
-filename response TEMP;
+filename resp TEMP;
 filename content TEMP;
 
 data _null_;
@@ -46,22 +59,22 @@ run;
 
 proc http
   /* Substitute your webhook URL here */
-  url="webhook"
+  url="<yourwebhook>"
   method="POST"
   in=content
-  out=response;
+  out=resp;
 run;
 
 
-libname responses JSON fileref=response;
+/* libname resps JSON fileref=resp; */
+/*  */
+/* data _null_; */
+/* set resps.ROOT; */
+/* call symputx( "statusId", status); */
+/* run; */
+/*  */
+/* data _null_; */
+/* put "&statusId."; */
+/* run; */
 
-data _null_;
-set responses.ROOT;
-call symputx( "statusId", status);
-run;
-
-data _null_;
-put "&statusId.";
-run;
-
-filename response clear;
+filename resp clear;

@@ -1,9 +1,10 @@
 /*********************************************
 *************** Build Job ********************
 **********************************************
+
 Program Name : 1_run_build.sas
 Owner : ivnard/artglz that developed this code
-Program Description : Runs Python script for
+Program Description : Runs shell script for
 building docker image based on model downloaded
 from Model Manager to server.
 
