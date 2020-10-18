@@ -28,6 +28,7 @@ fi
 cd "${OKD_DIR}"
 
 # 1 - Delete all resources and persistent volumes
+echo "$(date '+%x %r') INFO Delete all resources..."
 oc delete all --all
 #oc delete pv "${PVNAME}"
 

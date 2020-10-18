@@ -18,7 +18,7 @@ cd "${OKD_DIR}"
 # 0 - Clean ImageStreams directory...
 echo "$(date '+%x %r') INFO Cleaning ImageStreams directory..."
 if [ -d "${IMAGE_STREAMS_DIR}" ]; then
-  rm -Rf "${IMAGE_STREAMS_DIR}"
+  sudo rm -Rf "${IMAGE_STREAMS_DIR}"
   mkdir -m 777 "${IMAGE_STREAMS_DIR}"
 else
   mkdir -m 777 "${IMAGE_STREAMS_DIR}"
