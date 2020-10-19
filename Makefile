@@ -24,4 +24,4 @@ setup:
 #Clean env
 clean:
 	rm -Rf ./${VENVNAME}
-    rm -Rf ./logs
+	rm -Rf ./logs
