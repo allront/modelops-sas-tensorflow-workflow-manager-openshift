@@ -20,9 +20,9 @@ VENV=${PROJECT_DIR}/env/bin/activate
 cd ${WORKDIR}
 source ${VENV}
 
-echo "$(date '+%x %r') INFO Execute transform_load.py"
-sudo chmod +x ./transform_load.py
-python3 transform_load.py
+echo "$(date '+%x %r') INFO Execute etl.py"
+sudo chmod +x ./etl.py
+python3 etl.py
 
 echo "$(date '+%x %r') INFO Execute retrain.py"
 sudo chmod +x ./train.py

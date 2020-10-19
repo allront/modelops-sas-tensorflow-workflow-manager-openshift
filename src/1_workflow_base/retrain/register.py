@@ -3,8 +3,8 @@
 """
 register.py is the module for register the champion model on server.
 Steps:
-#
-#
+1 - Create model package with pzmm and sasctl
+2 - Register the model
 Author: Ivan Nardini (ivan.nardini@sas.com)
 """
 
@@ -135,8 +135,10 @@ def run_model_tracking (server, user, password, zipath, projectname, modelname):
                                                )
         zipfile.close()
 
+    return 0
 
-# Build Pipeline -------------------------------------------------------------------------------------------------------
+
+# Build Methods -------------------------------------------------------------------------------------------------------
 def build_write_metadata (config):
     VARIABLES_SCHEMA_META = config['variables_schema_meta']
     TARGET = VARIABLES_SCHEMA_META['target']
@@ -182,17 +184,18 @@ def build_write_metadata (config):
     return write_metadata
 
 
-def build_run_model_tracking (config, zip_champion_path):
-    MODEL_REG = config['model_registration']['registration']
+def register_model (config, zip_champion_path):
+    MODEL_REG_CONN = config['model_registration']['connection']
+    MODEL_REG_META = config['model_registration']['metadata']
 
-    run_model_tracking(MODEL_REG['server'],
-                       MODEL_REG['username'],
-                       MODEL_REG['password'],
+    status = run_model_tracking(MODEL_REG_CONN['server'],
+                       MODEL_REG_CONN['username'],
+                       MODEL_REG_CONN['password'],
                        zip_champion_path,
-                       MODEL_REG['projectname'],
-                       MODEL_REG['modelname'])
+                       MODEL_REG_META['projectname'],
+                       MODEL_REG_META['modelname'])
 
-    return run_model_tracking
+    return status
 
 
 # Main -----------------------------------------------------------------------------------------------------------
@@ -210,9 +213,9 @@ def main ():
     logging.info(
         f'Tf model zipped in {zip_tf_savedmodel} and Model folder for SAS Model Manager zipped in {zip_chmp_folder}')
     logging.info('Registering the model...')
-    model_tracking = build_run_model_tracking(CONFIG, zip_chmp_folder)
-    #model_tracking()
-    logging.info('Registration completed!')
+    status = register_model(CONFIG, zip_chmp_folder)
+    if status == 0:
+        logging.info('Registration completed!')
 
 if __name__ == "__main__":
     main()

@@ -4,6 +4,15 @@
 train.py is the module for retraining the champion model on server.
 
 Steps:
+1 - Ingest data in a Tf fashion
+2 - Extract values for imputation
+3 - Build input_fn for ingest data
+4 - Get features
+5 - Build Estimator
+6 - Train the pipeline
+7 - Print evaluation metrics
+8 - Save the model artefact
+
 Author: Ivan Nardini (ivan.nardini@sas.com)
 """
 
