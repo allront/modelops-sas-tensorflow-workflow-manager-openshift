@@ -14,8 +14,12 @@
 # Author: Ivan Nardini (ivan.nardini@sas.com)
 
 # Variables
-WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
-VENV=${PROJECT_DIR}/env/bin/activate
+#WORKDIR=${PROJECT_DIR}/src/1_workflow_base/retrain
+#VENV=${PROJECT_DIR}/env/bin/activate
+# From SAS Viya
+WORKDIR=/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/1_workflow_base/retrain/
+VENV=/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/env/bin/activate
+
 
 cd ${WORKDIR}
 source ${VENV}
