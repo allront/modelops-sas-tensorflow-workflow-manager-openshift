@@ -19,8 +19,9 @@ setup:
 	python3 -m venv ${VENVNAME}; \
 	source ./${VENVNAME}/bin/activate; \
        	pip install -r requirements.txt; \
-        mkdir -m 777 -p logs/tf_logs; \
-
+        #mkdir -m 777 -p logs/tf_logs; \
+	mkdir -m 777 -p logs/tf_logs;
 #Clean env
 clean:
 	rm -Rf ./${VENVNAME}
+    rm -Rf ./logs
