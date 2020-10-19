@@ -1,5 +1,13 @@
+db_endpoint_meta:
+    driver: postgresql
+    username: rusarg
+    password: Orion123
+    hostname: 172.28.104.90 #logdb #172.17.0.1 #localhost
+    port: 2345
+    dbname: rusarg
+table_meta:
+    prefix: HMEQPERF
 data_meta:
-    datapath_in: ./data/val
     datapath_out: ./data/retrain
     datafile: 'retrain.csv'
     test_size: 0.1
