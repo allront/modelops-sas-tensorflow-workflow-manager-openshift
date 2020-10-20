@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # O_prebuild.sh
-# O_prebuild.sh is paired with prebuild.py script to download the artefact on the server
+# O_prebuild.sh is paired with prebuild.py script for downloading the artefact on the server
 #
 # Variables:
 # PROJECT_NAME=${1:-sas_modelops_tensorflow_openshift} SAS Model Manager project name

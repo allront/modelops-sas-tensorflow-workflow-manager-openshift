@@ -20,12 +20,11 @@
 WORKDIR=/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/src/1_workflow_base/retrain/
 VENV=/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/env/bin/activate
 
-
 cd ${WORKDIR}
 source ${VENV}
 
 #echo "$(date '+%x %r') INFO Execute etl.py"
-#sudo chmod +x ./etl.py
+sudo chmod +x ./etl.py
 #python3 etl.py
 
 echo "$(date '+%x %r') INFO Execute retrain.py"
