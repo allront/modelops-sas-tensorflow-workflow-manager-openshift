@@ -63,7 +63,7 @@ def write_requirements (folder, filename):
     create the requirements file.
     :param folder:
     :param filename:
-    :return:
+    :return: None
     '''
     reqfile_path = os.path.join(folder, filename)
     with open(reqfile_path, "w") as f:

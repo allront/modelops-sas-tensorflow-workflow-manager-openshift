@@ -170,7 +170,7 @@ def normalizer (column, mean, std):
     :param column:
     :param mean:
     :param std:
-    :return:
+    :return: standardized column
     '''
     return (column - mean) / std
 

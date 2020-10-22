@@ -95,6 +95,12 @@ def write_select_tables_query (tablenames: list) -> str:
     return queries
 
 def extract_tables (connection, queries):
+    '''
+    Extraxt tables from Postgres
+    :param connection:
+    :param queries:
+    :return: dfs
+    '''
     dfs = [pd.read_sql_query(query, connection) for query in queries]
     return dfs
 
@@ -102,7 +108,7 @@ def select_columns (dataframe: pd.DataFrame, labels: list) -> pd.DataFrame:
     '''
     Select columns for retraining
     :param labels:
-    :return:
+    :return: df
     '''
     df = dataframe[labels]
     return df
@@ -111,7 +117,7 @@ def create_training_dataframe (raw_dfs: list, labels: list) -> pd.DataFrame:
     '''
     Append dataframes one to another
     :param datapaths:
-    :return:
+    :return: train_df
     '''
     dfs = [select_columns(df, labels) for df in raw_dfs]
     train_df = pd.concat(dfs)
@@ -122,7 +128,7 @@ def write_traindf (train_df: pd.DataFrame, datapath: str):
     Write training dataframe
     :param train_df:
     :param datapath:
-    :return:
+    :return: None
     '''
 
     filename = 'retrain.csv'
