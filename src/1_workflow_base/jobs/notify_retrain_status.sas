@@ -1,18 +1,18 @@
 /*************************************************************
-*************** Notify Champion Publish Job ******************
+*************** Notify Retrain Model Job *********************
 **************************************************************
 
-Program Name : notify_champion_model_publish_2.sas
+Program Name : notify_retrain_status.sas
 Owner : ivnard that developed this code
 Program Description : Send a notification on MS team
-for champion model publishing
+for retraining model status
 
 **************************************************************
 **************************************************************
 **************************************************************/
 
 options noquotelenmax;
-filename logfile '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs/notify2.log';
+filename logfile '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs/notify4.log';
 
 proc printto log=logfile;
 run;
@@ -40,15 +40,15 @@ datalines;
 			"facts": [
 				{
 					"name": "Title:",
-					"value": "**Tensorflow Champion Model Publishing Status**"
+					"value": "**Retraining Status**"
 				},
 				{
 					"name": "Details:",
-					"value": "Model was validated. Its image was successfully built and shipped on Openshift."
+					"value": "Retraining process successfully completed! A new version of the model is registered in SAS Model Manager"
 				},
 				{
 					"name": "Current Status:",
-					"value": "System is ready to monitor your model in production..."
+					"value": "Approval is required to ship the new version. Please check the project repository"
 				}
 			]
 		}

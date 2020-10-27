@@ -1,18 +1,18 @@
 /*************************************************************
-*************** Notify Performance report Job ****************
+*************** Notify Champion Approval Job *****************
 **************************************************************
 
-Program Name : notify_performance_report_3.sas
+Program Name : notify_champion_model_approval.sas
 Owner : ivnard that developed this code
 Program Description : Send a notification on MS team
-for performance report results
+for champion model approval
 
 **************************************************************
 **************************************************************
 **************************************************************/
 
 options noquotelenmax;
-filename logfile '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs/notify3.log';
+filename logfile '/opt/demos/modelops-sas-tensorflow-workflow-manager-openshift/logs/notify1.log';
 
 proc printto log=logfile;
 run;
@@ -28,27 +28,27 @@ datalines;
 {
 	"@type": "MessageCard",
 	"@context": "https://schema.org/extensions",
-	"summary": "This is the summary property",
+	"summary": "Process summary message",
 	"themeColor": "0075FF",
 	"sections": [
 		{
 			"startGroup": true,
 			"title": "**SAS Workflow Manager Process Notification**",
-			"activityImage": "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/notification-circle-red-512.png",
+			"activityImage": "https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/notification-circle-blue-512.png",
 			"activityTitle": "",
 			"activitySubtitle": "",
 			"facts": [
 				{
 					"name": "Title:",
-					"value": "**Performances Report**"
+					"value": "**Tensorflow Champion Model Approval Status**"
 				},
 				{
 					"name": "Details:",
-					"value": "Performance report successfully generated."
+					"value": "Analytics Leader approves Champion Model."
 				},
 				{
 					"name": "Current Status:",
-					"value": "Based on the report, the model is underperforming. Process will start the retraining process..."
+					"value": "Process is shipping Tensorflow Docker Image to production..."
 				}
 			]
 		}
