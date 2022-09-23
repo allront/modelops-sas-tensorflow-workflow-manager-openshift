@@ -128,7 +128,7 @@ prometheus-client @ file:///home/conda/feedstock_root/build_artifacts/prometheus
 prometheus-flask-exporter==0.18.0
 promise==2.3
 prompt-toolkit @ file:///home/conda/feedstock_root/build_artifacts/prompt-toolkit_1597061474901/work
-protobuf==3.12.4
+protobuf==3.18.3
 psutil @ file:///home/conda/feedstock_root/build_artifacts/psutil_1594826931824/work
 ptyprocess==0.6.0
 pyarrow==0.17.1
